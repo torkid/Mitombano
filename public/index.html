@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PenziShata - Magroup Matamu ya WhatsApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0A0A; /* Darker background */
+        }
+        .font-handwriting {
+            font-family: 'Caveat', cursive;
+        }
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            object-fit: cover;
+            filter: blur(8px) brightness(0.4); /* Blur and darken the video more */
+        }
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(17, 24, 39, 0.6) 0%, rgba(11, 10, 10, 0.9) 100%);
+            z-index: -1;
+        }
+        .whatsapp-card {
+            background-color: #121B22; /* WhatsApp Dark Mode Chat Bubble */
+        }
+        .whatsapp-green {
+            background-color: #00A884; /* WhatsApp Green */
+        }
+        .whatsapp-green:hover {
+            background-color: #00896B;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Video Background -->
+    <video autoplay loop muted playsinline id="background-video">
+        <!-- Video source will be set by JavaScript -->
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="relative min-h-screen flex flex-col">
+
+        <!-- Header / Navigation -->
+        <header class="w-full px-4 sm:px-8 py-4 z-20">
+            <div class="container mx-auto flex justify-center items-center">
+                <h1 class="text-3xl font-extrabold text-white">Penzi<span class="text-red-500">Shata</span></h1>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <main class="flex-grow flex flex-col items-center pt-8 md:pt-12">
+            <div class="container mx-auto px-4 sm:px-8 text-center">
+                
+                <!-- NEW HERO STRUCTURE -->
+                <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-red-900/40 border border-white/10 flex flex-col justify-center items-center aspect-video">
+                    <video id="hero-video-player" autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0"></video>
+                    <div class="absolute inset-0 bg-black/60 z-10"></div>
+                    <div class="relative z-20 p-4">
+                        <span class="bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">18+ WENYE NYEGE TU</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight my-4">
+                            Punyeto za Google Hazikutoshelezi? 😠<br> Pata Video Halisi za Kibongo Hapa.
+                        </h2>
+                    </div>
+                </div>
+
+                <p class="text-lg md:text-xl text-gray-300 max-w-xl mx-auto my-8">
+                   Acha kupoteza muda na video feki na picha za kuungaunga. Huku unapata 'raw footage', bila sensor, bila unafiki. Ni raha tupu kutoka kwa watu halisi kama wewe, wakifanya mambo yao live.
+                </p>
+                <button class="open-modal-trigger bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition duration-300 transform hover:scale-105 shadow-lg shadow-red-500/30 w-full max-w-md mx-auto">
+                    NIONYESHE VIDEO ZOTE SASA (TSH 5,000) 🔥
+                </button>
+            </div>
+
+            <!-- Sections Container -->
+            <div class="container mx-auto px-4 sm:px-8 text-center mt-24 w-full max-w-4xl">
+                <section>
+                    <h2 class="text-3xl font-bold text-center mb-8">Chagua Sumu Yako... Kila Group Lina Kiu Yake 😈</h2>
+                    <div class="space-y-4 max-w-2xl mx-auto">
+                        
+                        <!-- Group Card 1 -->
+                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
+                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
+                               <source src="https://www.mzansifun.com/upload/videos/2025/05/sY97MeomSLRKuEGCMLu4_21_dfd4d5f54b75f029d090426b0bd47c95_video_shorts_360p_converted.mp4" type="video/mp4">
+                           </video>
+                           <div class="text-left flex-grow">
+                                <h3 class="font-bold text-lg text-white">Video za Kichakani 🌳</h3>
+                                <p class="text-gray-400 mt-1 text-xs">Hapa hakuna ma-studio wala script. Ni video halisi za watu wakijirusha kichakani, gesti, na kwenye magari. Raw, uncensored, na za kweli.</p>
+                           </div>
+                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
+                                Jiunge
+                           </button>
+                        </div>
+
+                        <!-- Group Card 2 -->
+                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
+                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
+                               <source src="https://www.mzansifun.com/upload/videos/2024/12/JHOqoYTNAZ6lhBcBQYSb_10_f2dcc3801e4738a4420eb3300db89abd_video_shorts_240p_converted.mp4" type="video/mp4">
+                           </video>
+                           <div class="text-left flex-grow">
+                                <h3 class="font-bold text-lg text-white">Mashine za Bongo 🍑</h3>
+                                <p class="text-gray-400 mt-1 text-xs">Jionee wenyewe warembo wa Kitanzania wenye maumbo matata wakionyesha ufundi wao. Hapa ni full kujiachia, utapenda unachokiona.</p>
+                           </div>
+                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
+                                Jiunge
+                           </button>
+                        </div>
+
+                        <!-- Group Card 3 -->
+                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
+                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
+                               <source src="https://www.mzansifun.com/upload/videos/2024/06/2t6k3Omq3Jq7Po9M1gdy_28_d235ebbf915f31c2c1193f47a73937d2_video_shorts_240p_converted.mp4" type="video/mp4">
+                           </video>
+                           <div class="text-left flex-grow">
+                                <h3 class="font-bold text-lg text-white">Gumzo za Usiku wa Manane 💬</h3>
+                                <p class="text-gray-400 mt-1 text-xs">Video haitoshi? Ingia kwenye group la chat ambapo story ni za chumbani tu. Tuma na pokea picha, sauti, na andaa 'private session' yako.</p>
+                           </div>
+                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
+                                Jiunge
+                           </button>
+                        </div>
+
+                        <!-- Group Card 4 -->
+                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
+                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
+                               <source src="https://www.mzansifun.com/upload/videos/2023/05/AQkZ1Rsc6LkMo27MDFSe_29_ee87196bd45ada354c7f23f204465a51_video_shorts_240p_converted.mp4" type="video/mp4">
+                           </video>
+                           <div class="text-left flex-grow">
+                                <h3 class="font-bold text-lg text-white">Wanafunzi wa Chuo (18+) 🎓</h3>
+                                <p class="text-gray-400 mt-1 text-xs">Tazama wanafunzi (18+) wakivua uniform na kuonyesha utundu wao baada ya vipindi. Hii content exclusive huipati kwingine.</p>
+                           </div>
+                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
+                                Jiunge
+                           </button>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Video Teaser Section -->
+                <section class="mt-20">
+                    <h2 class="text-3xl font-bold text-center mb-8">Onja Asali ya VIP... Hii ni Sample Tu. 😉</h2>
+                    <div class="max-w-3xl mx-auto">
+                        <!-- Main Video Player -->
+                        <div id="main-video-container" class="bg-black rounded-xl overflow-hidden shadow-lg border border-gray-700 relative">
+                            <video id="main-video-player" class="w-full aspect-video" muted playsinline src="https://www.mzansifun.com/upload/videos/2025/06/QOwTv2iwlFU6ZNnZmjfy_13_773d96faaa52736b2d416f71a2965e76_video_480p_converted.mp4"></video>
+                             <div id="main-play-button" class="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer">
+                                <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            </div>
+                        </div>
+                        <!-- Video Details -->
+                        <div class="flex items-center justify-between text-sm text-gray-400 px-2 py-3">
+                            <div class="flex items-center gap-4">
+                                <span>🔥 1.8M Views</span>
+                                <span>💾 31.2 MB</span>
+                            </div>
+                            <button class="open-modal-trigger bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs py-2 px-4 rounded-full transition-colors">
+                                NATAKA FULL VIDEO BILA KUKATWA
+                            </button>
+                        </div>
+
+                        <!-- Thumbnails Carousel -->
+                        <div id="video-thumbnails" class="flex overflow-x-auto space-x-3 py-2 no-scrollbar">
+                            <!-- Thumbnails will be injected here -->
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Value Proposition Section -->
+                <section class="mt-20">
+                    <h2 class="text-3xl font-bold text-center mb-8">Unapotoa Buku 5, Unanunua Haya Mambo:</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 max-w-3xl mx-auto">
+                        <!-- Item 1 -->
+                        <div class="flex items-center gap-4">
+                            <div class="text-4xl">🔥</div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-white">Daily Dose ya Nyege</h3>
+                                <p class="text-gray-400 text-sm">Video 20+ mpya kila siku. Simu yako haitapumzika.</p>
+                            </div>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="flex items-center gap-4">
+                            <div class="text-4xl">📹</div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-white">Quality ya HD, Utamu Halisi</h3>
+                                <p class="text-gray-400 text-sm">Video zote ni clear, utaona kila kitu. Sio video za 'blurry' za Xvideos.</p>
+                            </div>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="flex items-center gap-4">
+                            <div class="text-4xl">🤫</div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-white">Download & Tuma Bila Wasiwasi</h3>
+                                <p class="text-gray-400 text-sm">Pata uwezo wa kudownload na kuwatumia marafiki zako kimyakimya.</p>
+                            </div>
+                        </div>
+                        <!-- Item 4 -->
+                        <div class="flex items-center gap-4">
+                            <div class="text-4xl">💬</div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-white">Direct Access kwa Wanachama</h3>
+                                <p class="text-gray-400 text-sm">Chat na wanachama wengine, badilishana namba na picha.</p>
+                            </div>
+                        </div>
+                         <!-- Item 5 -->
+                        <div class="flex items-center gap-4 md:col-span-2 md:justify-center">
+                            <div class="text-4xl">🚫</div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-white">Hakuna Virusi, Hakuna Matangazo</h3>
+                                <p class="text-gray-400 text-sm">Safe & clean. Ni raha zako tu na simu yako.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Before/After Section -->
+                <section class="mt-20">
+                    <h2 class="text-3xl font-bold text-center mb-8">Upande Gani wa Maisha Upo Sasa Hivi?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                        <!-- Left Column -->
+                        <div class="bg-red-900/30 border border-red-500 rounded-xl p-6">
+                            <h3 class="text-2xl font-bold text-red-400 mb-4">MAISHA YA PUNYETO 😫</h3>
+                            <ul class="space-y-3 text-left">
+                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Kutafuta video kwenye ma-site ya ajabu.</span></li>
+                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Ku-download virusi badala ya video.</span></li>
+                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Kuishia na picha za 'Photoshop'.</span></li>
+                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Kujisikia mpweke na mwenye hamu.</span></li>
+                            </ul>
+                        </div>
+                        <!-- Right Column -->
+                        <div class="bg-green-900/30 border border-green-500 rounded-xl p-6">
+                            <h3 class="text-2xl font-bold text-green-400 mb-4">MAISHA YA PENZISHATA 😈</h3>
+                            <ul class="space-y-3 text-left">
+                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kufungua simu na kukutana na video mpya.</span></li>
+                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kuwa kwenye community ya watu wenye nyege kama wewe.</span></li>
+                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kuona video halisi za Kibongo, bila sensor.</span></li>
+                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kuridhisha hamu yako papo hapo.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reels Carousel Section -->
+                <section class="mt-20 w-full overflow-hidden">
+                    <h2 class="text-3xl font-bold text-center mb-8">Wanachama Wetu Live... Hakuna Kujificha Hapa. 👀</h2>
+                    <div class="carousel-container relative w-full">
+                        <div id="reels-scroller" class="flex scrolling-wrapper">
+                            <!-- Videos will be injected here by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How to Join Section -->
+                <section class="mt-20">
+                    <h2 class="text-3xl font-bold text-center mb-12">Mchakato Mzima Hauchukui Dakika 2.</h2>
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-center gap-6 md:gap-0">
+                        <!-- Step 1 -->
+                        <div class="flex flex-col items-center text-center w-full md:w-1/4">
+                            <div class="bg-pink-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold mb-3">1</div>
+                            <h3 class="font-semibold">Bonyeza "PATA ACCESS"</h3>
+                        </div>
+
+                        <!-- Arrow 1 -->
+                        <div class="hidden md:block mx-4">
+                            <svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 10H99" stroke="#4A5568" stroke-width="2" stroke-dasharray="4 4"/>
+                                <path d="M90 1L99 10L90 19" stroke="#4A5568" stroke-width="2"/>
+                            </svg>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="flex flex-col items-center text-center w-full md:w-1/4">
+                            <div class="bg-purple-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold mb-3">2</div>
+                            <h3 class="font-semibold">Lipa Elfu 5 tu</h3>
+                            <div class="flex justify-center mt-2">
+                                <img src="https://i.ibb.co/jvqbh208/zenopay-logo.png" alt="ZenoPay Payment Methods" class="h-8">
+                            </div>
+                        </div>
+
+                        <!-- Arrow 2 -->
+                         <div class="hidden md:block mx-4">
+                            <svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 10H99" stroke="#4A5568" stroke-width="2" stroke-dasharray="4 4"/>
+                                <path d="M90 1L99 10L90 19" stroke="#4A5568" stroke-width="2"/>
+                            </svg>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="flex flex-col items-center text-center w-full md:w-1/4">
+                            <div class="bg-pink-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold mb-3">3</div>
+                            <h3 class="font-semibold">Fungua Link & Anza Raha</h3>
+                             <svg class="w-6 h-6 text-gray-400 mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testimonials Section -->
+                <section class="mt-20 w-full">
+                    <h2 class="text-3xl font-bold text-center mb-8">Waliolipia Hawajutii... Soma Wanachosema:</h2>
+                    <div class="relative max-w-3xl mx-auto">
+                        <div id="testimonial-slider" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar">
+                            <!-- Testimonial 1 -->
+                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
+                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
+                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
+                                    <p class="font-handwriting text-2xl mt-4">"Nililipia kwa wasiwasi, dah! Kile nilichokikuta... akili yangu ilisimama. Content ni za ukweli, sio uongo."</p>
+                                    <p class="text-right mt-4 font-bold text-pink-400">- @Juma_la_Moto</p>
+                                </div>
+                            </div>
+                            <!-- Testimonial 2 -->
+                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
+                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
+                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
+                                    <p class="font-handwriting text-2xl mt-4">"Mimi kila nikiwa na hamu naingia hapa. Kila siku kuna kitu kipya. Imekuwa kama sehemu ya maisha yangu."</p>
+                                    <p class="text-right mt-4 font-bold text-pink-400">- Anonymous</p>
+                                </div>
+                            </div>
+                             <!-- Testimonial 3 -->
+                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
+                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
+                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
+                                    <p class="font-handwriting text-2xl mt-4">"Kupitia group la 'Gumzo za Usiku', nimepata namba mbili za uhakika. Hapa ni zaidi ya video."</p>
+                                    <p class="text-right mt-4 font-bold text-pink-400">- Sele, Sinza</p>
+                                </div>
+                            </div>
+                             <!-- Testimonial 4 -->
+                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
+                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
+                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
+                                    <p class="font-handwriting text-2xl mt-4">"Nimechoka na video za tochi. Huku unapata HD kabisa, unaona kila details. Elfu 5 ni ndogo sana kwa uhondo huu."</p>
+                                    <p class="text-right mt-4 font-bold text-pink-400">- @Mzee_wa_Quality</p>
+                                </div>
+                            </div>
+                             <!-- Testimonial 5 -->
+                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
+                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
+                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
+                                    <p class="font-handwriting text-2xl mt-4">"Napenda 'Video za Kichakani'. Zinaonyesha uhalisia, hakuna kuigiza. Ni kama uko pale unashuhudia live."</p>
+                                    <p class="text-right mt-4 font-bold text-pink-400">- David B.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Navigation Buttons -->
+                        <button id="prev-testimonial" class="absolute top-1/2 left-0 -translate-y-1/2 bg-black/20 hover:bg-black/50 p-2 rounded-full">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </button>
+                        <button id="next-testimonial" class="absolute top-1/2 right-0 -translate-y-1/2 bg-black/20 hover:bg-black/50 p-2 rounded-full">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- FINAL CTA SECTION -->
+                <section class="mt-20 w-full">
+                    <div class="bg-gray-900/60 rounded-2xl p-8 md:p-12 border border-pink-500/50 shadow-2xl shadow-pink-500/20">
+                        <h2 class="text-4xl font-extrabold text-center">NYEGE ZIMEPANDA? MALIZA HAMU YAKO SASA HIVI!</h2>
+                        <p class="text-center text-gray-400 mt-4">OFA YA KUJIUNGA KWA BEI HII INAISHIA BAADA YA:</p>
+                        <div class="my-4 flex justify-center items-center gap-2 text-4xl font-mono font-bold text-yellow-300">
+                            <span id="minutes">14</span>
+                            <span>:</span>
+                            <span id="seconds">59</span>
+                        </div>
+                        <p class="text-center text-yellow-400 font-semibold mt-2">Watu 500 wa kwanza pekee. Zimebaki nafasi 31.</p>
+                        <p class="text-center text-gray-300 mt-6">Kwa <span class="font-bold">TSh 5,000</span> tu, fungua dunia yote ya utamu papo hapo.</p>
+                        <button class="open-modal-trigger bg-green-500 hover:bg-green-400 text-white font-bold py-5 px-8 rounded-lg text-xl transition duration-300 transform hover:scale-105 shadow-lg shadow-green-500/50 w-full max-w-lg mx-auto mt-6 animate-pulse">
+                            NIUNGANISHE NA RAHA KWA TSH 5,000! 💦
+                        </button>
+                        <div class="flex justify-center mt-6">
+                           <img src="https://i.ibb.co/jvqbh208/zenopay-logo.png" alt="ZenoPay Payment Methods" class="h-10">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Malipo ya Siri. Hakuna atakayejua transaction hii.</p>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full py-6 px-4 sm:px-8 mt-12">
+            <div class="container mx-auto text-center text-gray-400">
+                <p>&copy; 2024 PenziShata. Haki zote zimehifadhiwa.</p>
+                <div class="mt-2">
+                    <a href="#" class="hover:text-white mx-2 text-sm">Vigezo na Masharti</a>
+                    <span class="text-gray-500">•</span>
+                    <a href="#" class="hover:text-white mx-2 text-sm">Sera ya Faragha</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    
+    <!-- Payment Modal (Initially Hidden) -->
+    <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+         <div id="payment-box" class="w-full max-w-sm bg-gray-200 rounded-lg shadow-2xl p-8 relative">
+            <button id="close-modal" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-3xl font-light">&times;</button>
+            <!-- Payment Form View -->
+            <div id="form-view">
+                <div class="flex justify-center mb-4">
+                    <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">18+ WAKUBWA TU</span>
+                </div>
+                <h1 class="text-2xl font-bold text-center text-gray-900 mb-2">Karibu Ufike Kileleni...</h1>
+                <p class="text-center text-gray-700 mb-4">Jaza namba yako ya simu hapa chini. Malipo yakikamilika, utapelekwa kwenye ukurasa salama wa malipo.</p>
+                <div class="my-6">
+                    <img src="https://i.ibb.co/jvqbh208/zenopay-logo.png" alt="Watoa Huduma" class="mx-auto h-10">
+                </div>
+                <form id="payment-form">
+                    <div class="mb-4">
+                        <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Namba ya Simu (kwa ajili ya kumbukumbu)</label>
+                        <input type="tel" id="phone" name="phone" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Mfano: 0712345678" required>
+                    </div>
+                    <div class="flex items-center justify-center mt-6">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline w-full text-lg">
+                            <span id="pay-button-text">Endelea na Malipo Salama ✨</span>
+                            <span id="pay-button-spinner" class="hidden">Inashughulikia...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- Result View has been REMOVED -->
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Video Shuffling Logic ---
+            const videoElement = document.getElementById('background-video');
+            const bgVideoSources = [
+                "https://www.mzansifun.com/upload/videos/2023/11/ZvAGlsS9EEVt5BaQot1o_09_e093812e031fcf81609bd2cf2859bae0_video_shorts_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2025/01/LiDzUzkZI7hnzANeVR2t_14_4a8167ed6da0d86b12a5f974486db989_video_shorts_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2023/07/z6bQwaqRf6COmh6JXdTG_12_9bcbfa99a0300e567080048708c288f0_video_shorts_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/03/tmM3Aem6cuCh63Wl4phL_08_4031729f5bb2e587e4a0f3e96bbebaab_video_shorts_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2023/08/2Im4uqMcPrBbgFspc5JO_10_e0757fc756185d134898dbb9a45079be_video_shorts_360p_converted.mp4"
+            ];
+            const randomBgIndex = Math.floor(Math.random() * bgVideoSources.length);
+            const randomBgVideo = bgVideoSources[randomBgIndex];
+            const sourceElement = document.createElement('source');
+            sourceElement.src = randomBgVideo;
+            sourceElement.type = 'video/mp4';
+            if (videoElement) {
+                videoElement.appendChild(sourceElement);
+                videoElement.load();
+            }
+
+            // --- Hero Video Logic ---
+            const heroVideoPlayer = document.getElementById('hero-video-player');
+            const heroVideoSources = [
+                "https://www.mzansifun.com/upload/videos/2025/06/QOwTv2iwlFU6ZNnZmjfy_13_773d96faaa52736b2d416f71a2965e76_video_480p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2025/03/MpeSDj3OX36l5goWdsxN_04_09f9e925364d67e2f336cdb62996c3d6_video_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2020/04/x19lsjJzGemVL7NN5jbz_12_69ef48212eb02ecc5398b86ce7cb8f3e_video_720p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/09/42U43Ad8x9srqCj3KdnR_10_16f5ff82e1c2cd5a0fb1fc6b6dabe887_video_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/08/mSwtesdw9CXODgBCxnQM_31_2b0cf34b1f6a225c0422cd16d895b8ab_video_720p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/10/9LGoR4DkDSpRfrrDaWIQ_01_6feec00dac7342db72c1b8bd257cc6d3_video_360p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2025/03/dqvEGLmAqHq9WWDHxDp7_06_03e32769f84eafdec3a733cbf7674a0f_video_360p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/08/X8gYxJOfLDmS5DmqiqmD_31_d2b53974d4f19619472ef4feb11be1e0_video_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2025/07/JaWt5iuNusfFttXf4AmC_26_3b4230309607efc318814b9733423660_video_240p_converted.mp4"
+            ];
+             if (heroVideoPlayer) {
+                const randomHeroIndex = Math.floor(Math.random() * heroVideoSources.length);
+                heroVideoPlayer.src = heroVideoSources[randomHeroIndex];
+                heroVideoPlayer.load();
+            }
+
+
+            // --- Modal Logic ---
+            const paymentModal = document.getElementById('payment-modal');
+            const closeModalButton = document.getElementById('close-modal');
+
+            const openModal = () => paymentModal.classList.remove('hidden');
+            const closeModal = () => paymentModal.classList.add('hidden');
+
+            const attachOpenModalListeners = () => {
+                 document.querySelectorAll('.open-modal-trigger').forEach(trigger => {
+                    trigger.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        openModal();
+                    });
+                });
+            }
+            attachOpenModalListeners(); 
+
+            if(closeModalButton) {
+                closeModalButton.addEventListener('click', closeModal);
+            }
+            
+            if(paymentModal) {
+                paymentModal.addEventListener('click', (event) => {
+                    if (event.target === paymentModal) {
+                        closeModal();
+                    }
+                });
+            }
+            
+            // --- Video Player & Thumbnails Logic ---
+            const mainVideoPlayer = document.getElementById('main-video-player');
+            const mainPlayButton = document.getElementById('main-play-button');
+            const thumbnailsContainer = document.getElementById('video-thumbnails');
+            const teaserVideoSources = [
+                "https://www.mzansifun.com/upload/videos/2025/06/QOwTv2iwlFU6ZNnZmjfy_13_773d96faaa52736b2d416f71a2965e76_video_480p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2025/03/MpeSDj3OX36l5goWdsxN_04_09f9e925364d67e2f336cdb62996c3d6_video_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2020/04/x19lsjJzGemVL7NN5jbz_12_69ef48212eb02ecc5398b86ce7cb8f3e_video_720p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/09/42U43Ad8x9srqCj3KdnR_10_16f5ff82e1c2cd5a0fb1fc6b6dabe887_video_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/08/mSwtesdw9CXODgBCxnQM_31_2b0cf34b1f6a225c0422cd16d895b8ab_video_720p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/10/9LGoR4DkDSpRfrrDaWIQ_01_6feec00dac7342db72c1b8bd257cc6d3_video_360p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2025/03/dqvEGLmAqHq9WWDHxDp7_06_03e32769f84eafdec3a733cbf7674a0f_video_360p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2024/08/X8gYxJOfLDmS5DmqiqmD_31_d2b53974d4f19619472ef4feb11be1e0_video_240p_converted.mp4",
+                "https://www.mzansifun.com/upload/videos/2025/07/JaWt5iuNusfFttXf4AmC_26_3b4230309607efc318814b9733423660_video_240p_converted.mp4"
+            ];
+            
+            if (thumbnailsContainer) {
+                teaserVideoSources.forEach(src => {
+                    const videoThumb = document.createElement('video');
+                    videoThumb.className = 'w-28 h-20 object-cover rounded-md cursor-pointer border-2 border-transparent hover:border-pink-500 transition-all';
+                    videoThumb.src = src;
+                    videoThumb.muted = true;
+                    
+                    thumbnailsContainer.appendChild(videoThumb);
+
+                    videoThumb.addEventListener('click', () => {
+                        if(mainVideoPlayer) {
+                            mainVideoPlayer.src = src;
+                            mainVideoPlayer.pause();
+                        }
+                        if(mainPlayButton) mainPlayButton.classList.remove('hidden');
+                    });
+                });
+            }
+
+            const playMainVideo = () => {
+                if(!mainVideoPlayer) return;
+                mainVideoPlayer.play().then(() => {
+                    if(mainPlayButton) mainPlayButton.classList.add('hidden');
+                    setTimeout(() => {
+                        mainVideoPlayer.pause();
+                        openModal();
+                    }, 10000); // 10 seconds
+                }).catch(e => console.log("Play interrupted or failed."));
+            };
+            
+            if(mainPlayButton) {
+                mainPlayButton.addEventListener('click', playMainVideo);
+            }
+            if(mainVideoPlayer) {
+                mainVideoPlayer.addEventListener('click', playMainVideo);
+            }
+
+
+            // --- Reels Carousel Video Logic ---
+            const reelsScroller = document.getElementById('reels-scroller');
+            const reelVideoSources = [
+                "https://www.mzansifun.com/upload/videos/2025/05/sY97MeomSLRKuEGCMLu4_21_dfd4d5f54b75f029d090426b0bd47c95_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/12/JHOqoYTNAZ6lhBcBQYSb_10_f2dcc3801e4738a4420eb3300db89abd_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/06/2t6k3Omq3Jq7Po9M1gdy_28_d235ebbf915f31c2c1193f47a73937d2_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/05/AQkZ1Rsc6LkMo27MDFSe_29_ee87196bd45ada354c7f23f204465a51_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/09/B6AeMpOpq9JEY8Y4bIaH_08_0f8856671a15492841f1f175b1b428c0_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/02/bBG6kYa6qm2pvWHcuwNO_10_d75a7a0b1c3f2fec159c1944ec4c0c69_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/03/CoXYhDZUwKHlBgYwdnMk_16_41afd4a0fc42c5dab4ac370defb6b1ae_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/02/ArfSMSnYYDCpkRQEzEJh_03_421dec922786f605f38936d3c836b9c8_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2022/10/XhDj7hJ3JqariJVqd7qz_30_be21bc227d1ac518042bd14c967ac585_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/03/zEbg531qd6SwNYrzjteC_17_d3234843a272bf44298c0a29059745f7_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/07/lOQQAPoLJuBQG14BX5pZ_28_f10f964ab90c97ca16903078eab7e918_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2022/10/NSp4OslEfrnzGlvPmMUi_30_3c633bfab5920582cb3971eafa2b3aef_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/05/BFaHb57lv5SmXRdw78bI_19_197f434a7d0f820a97351bca03b616b6_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/07/H3oWbBOEroagbfbBgFgh_08_7579be3836ad4b9acd97914dedf11858_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/01/eXQWkKKLClA5bf6UlfzQ_07_866fde37beceeba5b84a10e19e3c639c_video_shorts_240p_converted.mp4"
+            ];
+            
+            if (reelsScroller) {
+                reelVideoSources.sort(() => 0.5 - Math.random());
+                const selectedVideos = reelVideoSources.slice(0, 15);
+                const duplicatedVideos = [...selectedVideos, ...selectedVideos]; 
+
+                duplicatedVideos.forEach((src) => {
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'open-modal-trigger cursor-pointer flex-shrink-0 mx-2';
+
+                    const video = document.createElement('video');
+                    video.className = 'w-40 h-64 object-cover rounded-lg shadow-lg border-2 border-pink-500/50';
+                    video.src = src;
+                    video.muted = true;
+                    video.loop = true;
+                    video.playsInline = true;
+                    
+                    videoContainer.appendChild(video);
+                    reelsScroller.appendChild(videoContainer);
+
+                    video.play().catch(e => console.log("Autoplay was prevented."));
+                });
+                attachOpenModalListeners(); 
+            }
+
+
+            // --- Payment Form Logic ---
+            const paymentForm = document.getElementById('payment-form');
+            const payButtonText = document.getElementById('pay-button-text');
+            const payButtonSpinner = document.getElementById('pay-button-spinner');
+
+
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const submitButton = e.target.querySelector('button[type="submit"]');
+                    const phone = document.getElementById('phone').value;
+
+                    // Show loading state
+                    payButtonText.classList.add('hidden');
+                    payButtonSpinner.classList.remove('hidden');
+                    submitButton.disabled = true;
+
+                    try {
+                        // ***** FIX: Use absolute path for fetch *****
+                        const response = await fetch(window.location.origin + '/pay', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ phone: phone })
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.payment_link) {
+                            // Redirect the user to the ZenoPay checkout page
+                            window.location.href = result.payment_link;
+                        } else {
+                            // Handle errors from our server
+                            alert(result.error || 'Kulikuwa na tatizo, tafadhali jaribu tena.');
+                            // Hide loading state
+                            payButtonText.classList.remove('hidden');
+                            payButtonSpinner.classList.add('hidden');
+                            submitButton.disabled = false;
+                        }
+
+                    } catch (error) {
+                        console.error("Failed to send payment request:", error);
+                        alert('Imeshindwa kuwasiliana na server. Tafadhali angalia intaneti yako.');
+                        // Hide loading state
+                        payButtonText.classList.remove('hidden');
+                        payButtonSpinner.classList.add('hidden');
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+            
+            // --- UPDATED resetForm function ---
+            const resetForm = () => {
+                if(paymentForm) {
+                    paymentForm.reset();
+                    payButtonText.classList.remove('hidden');
+                    payButtonSpinner.classList.add('hidden');
+                    const submitButton = paymentForm.querySelector('button[type="submit"]');
+                    if (submitButton) submitButton.disabled = false;
+                }
+            };
+
+            if (closeModalButton) {
+                closeModalButton.addEventListener('click', resetForm);
+            }
+
+
+            // --- Testimonial Slider Logic ---
+            const slider = document.getElementById('testimonial-slider');
+            const prevBtn = document.getElementById('prev-testimonial');
+            const nextBtn = document.getElementById('next-testimonial');
+            let testimonialInterval;
+
+            const slideNext = () => {
+                if(!slider) return;
+                const slideWidth = slider.querySelector('.testimonial-slide').clientWidth;
+                if (slider.scrollLeft + slideWidth >= slider.scrollWidth) {
+                    slider.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+                }
+            };
+            
+            const startTestimonialAutoplay = () => {
+                testimonialInterval = setInterval(slideNext, 5000); 
+            };
+
+            const stopTestimonialAutoplay = () => {
+                clearInterval(testimonialInterval);
+            };
+
+            if (nextBtn && prevBtn && slider) {
+                nextBtn.addEventListener('click', () => {
+                    slideNext();
+                    stopTestimonialAutoplay(); 
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    const slideWidth = slider.querySelector('.testimonial-slide').clientWidth;
+                    slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+                    stopTestimonialAutoplay();
+                });
+
+                startTestimonialAutoplay();
+            }
+
+
+            // --- Countdown Timer Logic ---
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            let time = 15 * 60; 
+
+            const updateCountdown = () => {
+                if (!minutesEl || !secondsEl) return;
+                let minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                minutesEl.innerHTML = minutes;
+                secondsEl.innerHTML = seconds;
+
+                if (time > 0) {
+                    time--;
+                } else {
+                    minutesEl.innerHTML = '00';
+                    secondsEl.innerHTML = '00';
+                }
+            };
+
+            setInterval(updateCountdown, 1000);
+
+        });
+    </script>
+</body>
+</html>
