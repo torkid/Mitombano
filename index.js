@@ -25,9 +25,8 @@ app.get('/', (req, res) => {
 });
 
 // Route to handle the payment submission
+// NOTE: This route no longer requires a phone number from the body
 app.post('/pay', async (req, res) => {
-    const { phone } = req.body;
-    
     // Get the user's country code from Vercel's request headers. Default to 'KE' (Kenya) if not found.
     const countryCode = req.headers['x-vercel-ip-country'] || 'KE';
 
@@ -83,12 +82,13 @@ app.post('/pay', async (req, res) => {
     const REDIRECT_URL = `${req.protocol}://${req.get('host')}/uthibitisho.html`;
 
     // Payload for the ZenoPay Multi-Currency Checkout API
+    // We now use generic customer details
     const payload = {
         "amount": finalAmount,
         "currency": currency,
-        "buyer_name": phone || "Customer",
-        "buyer_email": `${phone || 'customer-' + Date.now()}@zenopay.com`,
-        "buyer_phone": phone || "N/A",
+        "buyer_name": "Valued Customer",
+        "buyer_email": `customer-${Date.now()}@zenopay.com`, // Unique email for tracking
+        "buyer_phone": "N/A",
         "redirect_url": REDIRECT_URL
     };
 
