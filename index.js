@@ -15,12 +15,13 @@ const API_URL = "https://zenoapi.com/api/payments/checkout/"; // UPDATED API URL
 // This allows our server to understand JSON and form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 // --- Web Routes ---
 
-// Route to serve the main payment page
+// The main route is now handled by express.static, but this is a good fallback.
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -81,7 +82,13 @@ app.post('/pay', async (req, res) => {
 });
 
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// Start the server for local development
+// Vercel will ignore this and use the exported app
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
+
+// Export the app for Vercel - THIS IS THE FIX
+module.exports = app;
