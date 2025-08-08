@@ -1,0 +1,16 @@
+{
+  "name": "zenopay-payment-page",
+  "version": "1.0.0",
+  "description": "A simple payment page using ZenoPay and Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
