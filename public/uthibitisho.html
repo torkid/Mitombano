@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hali ya Malipo - PenziShata</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0B0A0A; color: white; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div id="message-box" class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-700">
+        <!-- Content will be injected by JavaScript -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const messageBox = document.getElementById('message-box');
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('status');
+            const tx_ref = params.get('tx_ref');
+
+            let title, message, icon;
+
+            if (status === 'successful') {
+                title = 'Malipo Yamekamilika! ✅';
+                message = `Asante! Malipo yako yamefanikiwa. Sasa unaweza kufurahia maudhui yote ya VIP. Kumbukumbu ya muamala wako ni: <strong>${tx_ref}</strong>.`;
+                icon = `<div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100"><svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>`;
+                // You can add code here to provide access to the content, e.g., show a link
+                // For example: message += '<br><a href="/vip-content" class="text-pink-400 font-bold">Bonyeza hapa kuingia</a>';
+            } else if (status === 'cancelled') {
+                title = 'Malipo Yamesitishwa 🟡';
+                message = 'Inaonekana umesitisha zoezi la malipo. Unaweza kujaribu tena wakati wowote.';
+                icon = `<div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100"><svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></div>`;
+            } else {
+                title = 'Malipo Yameshindikana ❌';
+                message = 'Samahani, jaribio lako la kulipa halikufanikiwa. Tafadhali angalia salio lako na ujaribu tena.';
+                icon = `<div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100"><svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg></div>`;
+            }
+
+            messageBox.innerHTML = `
+                ${icon}
+                <h1 class="text-2xl font-bold mt-4">${title}</h1>
+                <p class="text-gray-300 mt-2">${message}</p>
+                <a href="/" class="mt-6 inline-block bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg">Rudi Mwanzo</a>
+            `;
+        });
+    </script>
+</body>
+</html>
