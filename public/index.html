@@ -3,426 +3,857 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PenziShata - Magroup Matamu ya WhatsApp</title>
+    <title>PenziShata - Pata Video za Ukweli za Kibongo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Roboto+Condensed:wght@700&family=Chakra+Petch:wght@700&family=Teko:wght@700&family=VT323&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --brand-red: #E50914;
+            --brand-gold: #FFD700;
+            --dark-bg: #0A0A0A;
+            --text-light: #f1f1f1;
+            --text-muted: #A0A0A0;
+        }
         body { 
             font-family: 'Inter', sans-serif;
-            background-color: #0B0A0A; /* Darker background */
+            background-color: #000000;
+            background-image: radial-gradient(circle at center, #1a1a1a 10%, #000000 70%);
+            color: var(--text-light);
+            overflow-x: hidden;
         }
-        .font-handwriting {
-            font-family: 'Caveat', cursive;
+        .font-condensed {
+            font-family: 'Roboto Condensed', sans-serif;
         }
-        #background-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -2;
-            object-fit: cover;
-            filter: blur(8px) brightness(0.4); /* Blur and darken the video more */
+        .font-cctv {
+            font-family: 'Chakra Petch', sans-serif;
         }
-        .video-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(17, 24, 39, 0.6) 0%, rgba(11, 10, 10, 0.9) 100%);
-            z-index: -1;
+        .font-display {
+            font-family: 'Teko', sans-serif;
         }
-        .whatsapp-card {
-            background-color: #121B22; /* WhatsApp Dark Mode Chat Bubble */
+        .font-pixel {
+            font-family: 'VT323', monospace;
         }
-        .whatsapp-green {
-            background-color: #00A884; /* WhatsApp Green */
+        .main-cta-button {
+            background-color: var(--brand-red);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
         }
-        .whatsapp-green:hover {
-            background-color: #00896B;
+        .main-cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(229, 9, 20, 0.6);
         }
+        .glass-card {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- Michoro (Animations) --- */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7); }
+            50% { transform: scale(1.3); box-shadow: 0 0 0 7px rgba(229, 9, 20, 0); }
+        }
+        .heartbeat { animation: pulse 1.5s infinite; }
+
+        @keyframes typing-dots {
+            0%, 20% { content: '.'; }
+            40%, 60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        .typing-indicator::after {
+            content: '...';
+            animation: typing-dots 1.5s infinite;
+            display: inline-block;
+            width: 20px;
+            text-align: left;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(50px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+        .fake-toast { animation: fadeInOut 5s ease-in-out; }
         
-        .no-scrollbar::-webkit-scrollbar {
+        .video-preview-container { overflow: hidden; border-radius: 0.5rem; }
+        .video-preview { filter: blur(8px); transition: filter 0.3s ease-in-out; }
+        .group-card:hover .video-preview { filter: blur(0px); }
+
+        /* Vault Animations */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        @keyframes red-glow {
+            0% { box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #e60000; opacity: 0; }
+            50% { box-shadow: 0 0 40px #ff0000, 0 0 60px #ff0000, 0 0 80px #e60000; opacity: 1; }
+            100% { box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #e60000; opacity: 0; }
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(229, 9, 20, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); }
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px, -2px) skew(0deg); }
+            4%, 60% { transform: translate(-2px, 2px) skew(0deg); }
+            62% { transform: translate(0, 0) skew(5deg); }
+        }
+        .vault-container { perspective: 1000px; }
+        .vault-door {
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transform-origin: left;
+        }
+        .vault-container.is-opening .vault-door { transform: rotateY(-110deg); }
+        .vault-button:hover + .vault-door-wrapper { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        .inside-vault { opacity: 0; transition: opacity 0.5s 1s ease-in; }
+        .vault-container.is-opening .inside-vault { opacity: 1; }
+        .glitch-img { animation: glitch 1s linear infinite; }
+
+        /* Challenge Video Animations */
+        @keyframes static-noise {
+            0% { background-position: 0 0; } 10% { background-position: -5% -10%; } 20% { background-position: -15% 5%; } 30% { background-position: 7% -25%; } 40% { background-position: 20% 25%; } 50% { background-position: -25% 10%; } 60% { background-position: 15% 5%; } 70% { background-position: 0 15%; } 80% { background-position: 25% 35%; } 90% { background-position: -10% 10%; } 100% { background-position: 0 0; }
+        }
+        .static-overlay {
+            animation: static-noise 1s steps(1) infinite;
+            opacity: 0.1;
+        }
+        @keyframes rec-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        .rec-blink {
+            animation: rec-blink 1.5s infinite;
+        }
+        .interrupted-popup {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        /* Phone Comparison Styles */
+        .phone-frame {
+            background: #1a1a1a;
+            border: 8px solid #111;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .phone-screen {
+            background: #000;
+            overflow: hidden;
+        }
+        .mshamba-screen-content, .mnyama-screen-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .mshamba-screen-content.active { display: flex; }
+        .mnyama-screen-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .buffering-icon { animation: spin 1s linear infinite; }
+        .cracked-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="crack" patternUnits="userSpaceOnUse" width="50" height="50" patternTransform="scale(2) rotate(45)"><path d="M 0 25 L 50 25 M 25 0 L 25 50" stroke="%23222" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23crack)" opacity="0.1"/></svg>');
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(22, 163, 74, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+        }
+        .cta-button { animation: pulse-green 2s infinite; }
+        .cta-button:hover { animation: none; }
+
+        /* Marquee Styles */
+        .marquee-container {
+            display: flex;
+            width: max-content;
+        }
+        .marquee-content {
+            display: flex;
+            animation: marquee 60s linear infinite;
+        }
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+        @keyframes marquee {
+            from { transform: translateX(0%); }
+            to { transform: translateX(-50%); }
+        }
+        @keyframes pulse-live {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .live-badge {
+            animation: pulse-live 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Ushahidi Section Styles */
+        .slider-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .slider-container::-webkit-scrollbar {
             display: none;
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+        .mpesa-receipt {
+            background-color: #f0f0f0;
+            color: #333;
+            font-family: monospace;
+            border: 1px solid #ddd;
         }
-
+        .mpesa-header {
+            background-color: #009933;
+            color: white;
+        }
+        @keyframes progressBar {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        .progress-bar-fill {
+            animation: progressBar 2s ease-out forwards;
+        }
+        .fade-in-item {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(234, 179, 8, 0.8);
+                transform: scale(1.05);
+            }
+        }
+        .dashboard-button {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+         /* Tool Card Styles */
+         .tool-card {
+            background-color: #1a1a1a;
+            border: 2px solid #333;
+            transition: all 0.3s ease-in-out;
+         }
+         .tool-card:hover {
+            border-color: #E50914;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.3);
+         }
+         .tool-card:hover .tool-icon {
+            filter: drop-shadow(0 0 10px #E50914);
+            transform: scale(1.1);
+         }
+         .tool-description {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-in-out, margin-top 0.5s ease-out;
+         }
+         .tool-card:hover .tool-description {
+            max-height: 200px; /* Urefu wa kutosha kwa maelezo */
+            opacity: 1;
+            margin-top: 1rem; /* 16px */
+         }
+         /* Final Gate Styles */
+         @keyframes gate-glow {
+            0% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4), inset 0 0 15px rgba(220, 38, 38, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(220, 38, 38, 0.7), inset 0 0 25px rgba(220, 38, 38, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4), inset 0 0 15px rgba(220, 38, 38, 0.3); }
+         }
+         .gate-container {
+            background-color: #111;
+            border: 4px solid #444;
+            animation: gate-glow 3s infinite ease-in-out;
+         }
+         @keyframes pulse-insane {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(22, 163, 74, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+         }
+         .final-cta {
+            animation: pulse-insane 1.5s infinite;
+         }
+         /* Ramani ya Malaya Styles */
+         .map-container {
+            background-color: #000;
+            border: 4px solid #1a1a1a;
+            overflow: hidden; /* Important for radar effect */
+         }
+         @keyframes pulse-hotspot {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px #ff0000);
+            }
+            50% {
+                transform: scale(1.3);
+                filter: drop-shadow(0 0 15px #ff0000);
+            }
+         }
+         .hotspot {
+            animation: pulse-hotspot 2s infinite ease-in-out;
+            cursor: pointer;
+         }
+         .hotspot-popup {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateY(10px);
+         }
+         .hotspot:hover .hotspot-popup {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+         }
+         .radar-sweep {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            background: linear-gradient(45deg, rgba(0, 255, 0, 0.3) 0%, rgba(0, 255, 0, 0) 70%);
+            transform-origin: top left;
+            animation: radar-sweep 3s linear infinite;
+         }
+         @keyframes radar-sweep {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+         }
+         .radar-grid {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background-image: 
+                linear-gradient(rgba(0,255,0,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,0,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+         }
+         .radar-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+         }
+         /* Live Chat Styles */
+         .showcase-container {
+            background: linear-gradient(to top, #111, #222);
+            border: 2px solid #444;
+         }
+         .chat-feed {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+         }
+         .chat-feed::-webkit-scrollbar {
+            display: none;
+         }
+         @keyframes fadeInSlideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+         }
+         .new-chat-message {
+            animation: fadeInSlideUp 0.5s ease-out;
+         }
+         .join-chat-button {
+            animation: pulse-green 2s infinite;
+         }
+         .glitch-video {
+            animation: glitch 1.5s linear infinite alternate-reverse;
+         }
+         /* Header Animation */
+         @keyframes slow-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+         }
+         .slow-float-emoji {
+            animation: slow-float 3s ease-in-out infinite;
+         }
+         /* ATM Styles */
+         .atm-screen {
+            background: #081408; /* Dark green screen */
+            border: 4px solid #333;
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.3), inset 0 0 20px rgba(0,0,0,0.5);
+         }
+         .atm-text {
+            color: #4ade80; /* Bright green text */
+            text-shadow: 0 0 5px #4ade80, 0 0 10px #4ade80;
+         }
+         .atm-input {
+            background-color: rgba(74, 222, 128, 0.1);
+            border: 2px solid #22c55e;
+            color: #f0f0f0;
+         }
+         .atm-input::placeholder {
+            color: rgba(134, 239, 172, 0.4);
+         }
+         .atm-input:focus {
+            outline: none;
+            box-shadow: 0 0 15px #22c55e;
+         }
+         .atm-button {
+            background-color: #16a34a;
+            border-bottom: 4px solid #14532d;
+            animation: pulse-green 2s infinite;
+         }
+         .atm-button:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+         }
+         @keyframes radar-spin {
+            to { transform: rotate(360deg); }
+         }
+         .loading-circle {
+            animation: radar-spin 1.5s linear infinite;
+         }
+         @keyframes blink-text {
+            50% { opacity: 0.5; }
+         }
+         .blinking-text {
+            animation: blink-text 1s step-end infinite;
+         }
+         @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(-25%);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+         }
+         .bouncing-emoji {
+            animation: bounce 1s infinite;
+         }
     </style>
 </head>
-<body class="text-white">
+<body class="antialiased">
 
-    <!-- Video Background -->
-    <video autoplay loop muted playsinline id="background-video">
-        <!-- Video source will be set by JavaScript -->
-    </video>
-    <div class="video-overlay"></div>
+    <div class="relative min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- Main Container -->
-    <div class="relative min-h-screen flex flex-col">
-
-        <!-- Header / Navigation -->
-        <header class="w-full px-4 sm:px-8 py-4 z-20">
-            <div class="container mx-auto flex justify-center items-center">
-                <h1 class="text-3xl font-extrabold text-white">Penzi<span class="text-red-500">Shata</span></h1>
-            </div>
-        </header>
-
-        <!-- Hero Section -->
-        <main class="flex-grow flex flex-col items-center pt-8 md:pt-12">
-            <div class="container mx-auto px-4 sm:px-8 text-center">
-                
-                <!-- NEW HERO STRUCTURE -->
-                <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-red-900/40 border border-white/10 flex flex-col justify-center items-center aspect-video">
-                    <video id="hero-video-player" autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0"></video>
-                    <div class="absolute inset-0 bg-black/60 z-10"></div>
-                    <div class="relative z-20 p-4">
-                        <span class="bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">18+ WENYE NYEGE TU</span>
-                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight my-4">
-                            Punyeto za Google Hazikutoshelezi? 😠<br> Pata Video Halisi za Kibongo Hapa.
-                        </h2>
-                    </div>
+        <main class="flex-grow flex flex-col items-center">
+            
+            <section class="relative w-full h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden p-4">
+                <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0" style="filter: blur(5px) brightness(0.5);">
+                    <source id="hero-video-source" src="https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452687/13452687-preview.webm" type="video/webm">
+                </video>
+                <div class="absolute inset-0 bg-black/60 z-10"></div>
+                <div class="relative z-20 flex flex-col items-center pt-16 sm:pt-0">
+                    <div class="text-7xl sm:text-8xl slow-float-emoji mb-4">😈</div>
+                    <h1 class="text-5xl sm:text-6xl md:text-7xl font-black uppercase text-gray-200 font-display tracking-wider">
+                        UNASOTA NA PUNYETO,
+                    </h1>
+                    <h2 class="text-6xl sm:text-7xl md:text-8xl font-black uppercase text-red-600 font-display tracking-widest mt-1">
+                        WENZAKO WANAKOJOA
+                    </h2>
+                    <p class="text-base sm:text-lg text-gray-200 max-w-xl mx-auto my-6">
+                       Acha kujitekenya. Humu ndani kuna video 1,000+ za kutombana na link za magroup ya malaya wa Bongo wanaosubiri wateja. Bila VPN.
+                    </p>
+                    <button class="open-modal-trigger main-cta-button text-white font-bold py-4 px-8 rounded-lg text-lg sm:text-xl w-full max-w-sm mx-auto animate-pulse-red">
+                        Acha Ufala, Ingia Humu
+                    </button>
                 </div>
+            </section>
 
-                <p class="text-lg md:text-xl text-gray-300 max-w-xl mx-auto my-8">
-                   Acha kupoteza muda na video feki na picha za kuungaunga. Huku unapata 'raw footage', bila sensor, bila unafiki. Ni raha tupu kutoka kwa watu halisi kama wewe, wakifanya mambo yao live.
-                </p>
-                <button class="open-modal-trigger bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition duration-300 transform hover:scale-105 shadow-lg shadow-red-500/30 w-full max-w-md mx-auto">
-                    NIONYESHE VIDEO ZOTE SASA (TSH 5,000) 🔥
-                </button>
-            </div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Sections Container -->
-            <div class="container mx-auto px-4 sm:px-8 text-center mt-24 w-full max-w-4xl">
-                <section>
-                    <h2 class="text-3xl font-bold text-center mb-8">Chagua Sumu Yako... Kila Group Lina Kiu Yake 😈</h2>
-                    <div class="space-y-4 max-w-2xl mx-auto">
-                        
-                        <!-- Group Card 1 -->
-                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
-                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
-                               <source src="https://www.mzansifun.com/upload/videos/2025/05/sY97MeomSLRKuEGCMLu4_21_dfd4d5f54b75f029d090426b0bd47c95_video_shorts_360p_converted.mp4" type="video/mp4">
-                           </video>
-                           <div class="text-left flex-grow">
-                                <h3 class="font-bold text-lg text-white">Video za Kichakani 🌳</h3>
-                                <p class="text-gray-400 mt-1 text-xs">Hapa hakuna ma-studio wala script. Ni video halisi za watu wakijirusha kichakani, gesti, na kwenye magari. Raw, uncensored, na za kweli.</p>
-                           </div>
-                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
-                                Jiunge
-                           </button>
+                <section class="my-10 md:my-16">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl sm:text-4xl font-black uppercase tracking-wider">HAPA NDIO CHOONI.</h2>
+                        <h3 class="text-3xl sm:text-4xl font-black uppercase text-red-600">CHAGUA CHA KUJISAIDIA NACHO.</h3>
+                        <p class="mt-4 max-w-2xl mx-auto text-gray-400">
+                            Umechoka na njaa ya mboo? Kila group hapa lina mambo yake ya kishenzi. Video za kutombana, picha za uchi, na namba za malaya. Ingia popote, kojoa na huko.
+                        </p>
+                    </div>
+                    <div id="groups-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         </div>
+                </section>
 
-                        <!-- Group Card 2 -->
-                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
-                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
-                               <source src="https://www.mzansifun.com/upload/videos/2024/12/JHOqoYTNAZ6lhBcBQYSb_10_f2dcc3801e4738a4420eb3300db89abd_video_shorts_240p_converted.mp4" type="video/mp4">
-                           </video>
-                           <div class="text-left flex-grow">
-                                <h3 class="font-bold text-lg text-white">Mashine za Bongo 🍑</h3>
-                                <p class="text-gray-400 mt-1 text-xs">Jionee wenyewe warembo wa Kitanzania wenye maumbo matata wakionyesha ufundi wao. Hapa ni full kujiachia, utapenda unachokiona.</p>
-                           </div>
-                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
-                                Jiunge
-                           </button>
+                <section id="vault-section" class="my-10 md:my-16 w-full max-w-4xl mx-auto text-center">
+                    <div id="vault-header" class="mb-8 transition-opacity duration-500">
+                        <h2 class="text-3xl md:text-5xl font-black uppercase font-condensed tracking-wider text-gray-300">VIDEO 400+ ZA ENGONGA</h2>
+                        <h3 class="text-3xl md:text-5xl font-black uppercase font-condensed text-red-600">ZIMEFUNGIWA HUMU NDANI.</h3>
+                        <p class="mt-4 text-gray-400 max-w-lg mx-auto">Hii ni sanaa ya kutombana ambayo haijawahi kuona mwanga wa jua. Ni chafu, ni ya kishenzi, na ni kwa ajili ya macho yako tu.</p>
+                    </div>
+                    <div id="vault-container" class="vault-container relative w-[300px] h-[400px] sm:w-[350px] sm:h-[450px] mx-auto">
+                        <div class="inside-vault absolute inset-0 bg-black flex items-center justify-center">
+                            <div class="w-full h-full p-8 relative">
+                                <div class="absolute inset-0" style="animation: red-glow 2s ease-in-out infinite 1s;"></div>
+                                <div class="grid grid-cols-4 gap-2 w-full h-full" id="vault-grid">
+                                    </div>
+                            </div>
                         </div>
-
-                        <!-- Group Card 3 -->
-                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
-                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
-                               <source src="https://www.mzansifun.com/upload/videos/2024/06/2t6k3Omq3Jq7Po9M1gdy_28_d235ebbf915f31c2c1193f47a73937d2_video_shorts_240p_converted.mp4" type="video/mp4">
-                           </video>
-                           <div class="text-left flex-grow">
-                                <h3 class="font-bold text-lg text-white">Gumzo za Usiku wa Manane 💬</h3>
-                                <p class="text-gray-400 mt-1 text-xs">Video haitoshi? Ingia kwenye group la chat ambapo story ni za chumbani tu. Tuma na pokea picha, sauti, na andaa 'private session' yako.</p>
-                           </div>
-                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
-                                Jiunge
-                           </button>
+                        <div class="vault-door-wrapper absolute inset-0">
+                            <div class="vault-door absolute inset-0">
+                                <svg width="100%" height="100%" viewBox="0 0 350 450" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute inset-0">
+                                    <defs>
+                                        <radialGradient id="metal" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                                            <stop offset="0%" stop-color="#8d99ae" />
+                                            <stop offset="100%" stop-color="#2b2d42" />
+                                        </radialGradient>
+                                        <linearGradient id="hinge" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0%" stop-color="#434343" />
+                                            <stop offset="100%" stop-color="#000000" />
+                                        </linearGradient>
+                                    </defs>
+                                    <rect width="350" height="450" rx="20" fill="url(#metal)"/>
+                                    <rect x="5" y="5" width="340" height="440" rx="15" stroke="#111" stroke-width="10"/>
+                                    <rect x="-10" y="50" width="25" height="70" rx="5" fill="url(#hinge)" />
+                                    <rect x="-10" y="330" width="25" height="70" rx="5" fill="url(#hinge)" />
+                                    <circle cx="175" cy="225" r="80" fill="#1d1d1d" stroke="#e5e5e5" stroke-width="3"/>
+                                    <circle cx="175" cy="225" r="60" fill="#2d2d2d"/>
+                                    <g style="animation: spin 5s linear infinite;">
+                                        <circle cx="175" cy="225" r="70" stroke-dasharray="5 10" stroke="#777" stroke-width="2" fill="none"/>
+                                        <text x="175" y="175" fill="#e5e5e5" font-size="12" text-anchor="middle">80</text>
+                                        <text x="225" y="225" fill="#e5e5e5" font-size="12" text-anchor="middle">20</text>
+                                    </g>
+                                    <path d="M 270 215 L 310 215 L 320 225 L 310 235 L 270 235 Z" fill="#111"/>
+                                </svg>
+                            </div>
                         </div>
-
-                        <!-- Group Card 4 -->
-                        <div class="whatsapp-card rounded-xl shadow-lg border border-gray-700 p-3 flex items-center gap-4">
-                           <video class="w-20 h-20 object-cover rounded-full flex-shrink-0" autoplay loop muted playsinline>
-                               <source src="https://www.mzansifun.com/upload/videos/2023/05/AQkZ1Rsc6LkMo27MDFSe_29_ee87196bd45ada354c7f23f204465a51_video_shorts_240p_converted.mp4" type="video/mp4">
-                           </video>
-                           <div class="text-left flex-grow">
-                                <h3 class="font-bold text-lg text-white">Wanafunzi wa Chuo (18+) 🎓</h3>
-                                <p class="text-gray-400 mt-1 text-xs">Tazama wanafunzi (18+) wakivua uniform na kuonyesha utundu wao baada ya vipindi. Hii content exclusive huipati kwingine.</p>
-                           </div>
-                           <button class="open-modal-trigger whatsapp-green text-white font-bold py-2 px-4 rounded-full text-sm flex-shrink-0">
-                                Jiunge
-                           </button>
-                        </div>
-
+                    </div>
+                    <div id="button-container" class="mt-8 transition-opacity duration-500">
+                        <button id="vault-button" class="vault-button bg-red-600 text-white font-black text-lg uppercase py-4 px-8 rounded-lg shadow-lg transition-all duration-300 hover:bg-red-500 hover:scale-105" style="animation: pulse-red 2s infinite;">
+                            Jaribu Kuvunja Kabati
+                        </button>
+                    </div>
+                    <div id="opened-text" class="hidden opacity-0 transition-opacity duration-1000 mt-8">
+                         <h2 class="text-3xl md:text-5xl font-black uppercase font-condensed tracking-wider text-yellow-400">UMEFANIKIWA KUVUNJA.</h2>
+                         <p class="mt-2 text-gray-300">Kwa buku 5, kabati lote ni lako.</p>
+                         <button class="open-modal-trigger mt-6 bg-yellow-400 text-black font-black text-lg uppercase py-4 px-8 rounded-lg shadow-lg transition-all duration-300 hover:bg-yellow-300 hover:scale-105">
+                             CHUKUA VIDEO ZOTE SASA
+                         </button>
                     </div>
                 </section>
 
-                <!-- Video Teaser Section -->
-                <section class="mt-20">
-                    <h2 class="text-3xl font-bold text-center mb-8">Onja Asali ya VIP... Hii ni Sample Tu. 😉</h2>
-                    <div class="max-w-3xl mx-auto">
-                        <!-- Main Video Player -->
-                        <div id="main-video-container" class="bg-black rounded-xl overflow-hidden shadow-lg border border-gray-700 relative">
-                            <video id="main-video-player" class="w-full aspect-video" muted playsinline src="https://www.mzansifun.com/upload/videos/2025/06/QOwTv2iwlFU6ZNnZmjfy_13_773d96faaa52736b2d416f71a2965e76_video_480p_converted.mp4"></video>
-                             <div id="main-play-button" class="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer">
-                                <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                <section class="my-10 md:my-16">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl md:text-4xl font-black uppercase text-yellow-400">JE, UNAWEZA KUMALIZA HII VIDEO</h2>
+                        <h3 class="text-3xl md:text-4xl font-black uppercase text-gray-300">BILA KUKOJOA?</h3>
+                        <p class="mt-4 max-w-2xl mx-auto text-gray-400">
+                            Wengi wameshindwa. Hii video ina utamu uliopitiliza. Tunaweka dau, huwezi kufika sekunde ya 30 bila kumwaga. Thibitisha kama wewe ni mwanaume kweli.
+                        </p>
+                    </div>
+                    <div id="player-container" class="relative w-full max-w-2xl mx-auto border-4 border-gray-800 rounded-lg overflow-hidden shadow-2xl shadow-yellow-900/30">
+                        <video id="challenge-video" class="w-full aspect-video block" muted playsinline preload="metadata">
+                            </video>
+                        <div id="play-overlay" class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center cursor-pointer transition-opacity duration-300">
+                            <svg class="w-20 h-20 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            <span class="text-white font-bold text-xl mt-4">KUBALI CHANGAMOTO</span>
+                        </div>
+                        <div id="interruption-overlay" class="absolute inset-0 flex-col items-center justify-center bg-black/70 interrupted-popup p-8 text-center hidden">
+                            <div class="static-overlay absolute inset-0 z-0"></div>
+                            <div class="relative z-10">
+                                <h3 class="text-5xl md:text-7xl font-black text-red-500 font-cctv tracking-widest">UMESHINDWA MAPEMA!</h3>
+                                <p class="text-lg md:text-xl font-bold text-white mt-4 bg-black/50 p-2 rounded">Video ya bure imeishia hapa. Lipa buku 5 uone kama unaweza kuhimili video nzima.</p>
                             </div>
                         </div>
-                        <!-- Video Details -->
-                        <div class="flex items-center justify-between text-sm text-gray-400 px-2 py-3">
-                            <div class="flex items-center gap-4">
-                                <span>🔥 1.8M Views</span>
-                                <span>💾 31.2 MB</span>
+                    </div>
+                    <div id="cctv-thumbnails" class="flex flex-wrap justify-center gap-2 sm:gap-4 mt-4">
+                        </div>
+                     <div class="text-center mt-8">
+                        <button id="final-cta-button" class="open-modal-trigger bg-yellow-500 text-black font-black text-xl uppercase py-4 px-10 rounded-lg shadow-lg transition-all duration-300 hover:bg-yellow-400 hover:scale-105">
+                            SITAKI KUSHINDWA (TSH 5,000)
+                        </button>
+                    </div>
+                </section>
+
+                <section class="my-10 md:my-16">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl sm:text-4xl font-black uppercase">BUKU 5 YAKO INAKUPA HIZI SILAHA:</h2>
+                        <p class="mt-2 max-w-xl mx-auto text-gray-400">
+                            Hii sio bando la internet. Hii ni leseni ya kufanya ushenzi. Hizi ndio zana zako za kumaliza njaa ya mboo.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+                        <div class="tool-card rounded-lg p-4 text-center cursor-pointer">
+                            <div class="tool-icon text-6xl transition-transform duration-300">💣</div>
+                            <h3 class="font-black text-lg mt-2">BOMBA LA VIDEO</h3>
+                            <div class="tool-description text-sm text-gray-300">
+                                Kila saa, admin anadondosha video mpya za kutombana. Simu yako itajaa mpaka itoe moshi. Hutawahi kukosa cha kukojolea.
                             </div>
-                            <button class="open-modal-trigger bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs py-2 px-4 rounded-full transition-colors">
-                                NATAKA FULL VIDEO BILA KUKATWA
+                        </div>
+                        <div class="tool-card rounded-lg p-4 text-center cursor-pointer">
+                            <div class="tool-icon text-6xl transition-transform duration-300">🦅</div>
+                            <h3 class="font-black text-lg mt-2">JICHO LA TAI (HD)</h3>
+                            <div class="tool-description text-sm text-gray-300">
+                                Video zetu ni clear mpaka unaona matundu ya kuma. Hakuna video za tochi za kusadikika. Hapa ni kuona kila kitu live.
+                            </div>
+                        </div>
+                        <div class="tool-card rounded-lg p-4 text-center cursor-pointer">
+                            <div class="tool-icon text-6xl transition-transform duration-300">🤫</div>
+                            <h3 class="font-black text-lg mt-2">MFUKO WA KUIBA</h3>
+                            <div class="tool-description text-sm text-gray-300">
+                                Umeipenda video? Ibe, iweke kwenye simu yako. Ni yako milele. Tuma kwa washikaji zako wajue na wewe ni mnyama.
+                            </div>
+                        </div>
+                        <div class="tool-card rounded-lg p-4 text-center cursor-pointer">
+                            <div class="tool-icon text-6xl transition-transform duration-300">😈</div>
+                            <h3 class="font-black text-lg mt-2">REDIO YA WANYAMA</h3>
+                            <div class="tool-description text-sm text-gray-300">
+                                Hapa sio kutazama tu. Unaingia kwenye group la WhatsApp. Namba za malaya na picha za uchi zinatembea kama njugu.
+                            </div>
+                        </div>
+                        <div class="tool-card rounded-lg p-4 text-center cursor-pointer">
+                            <div class="tool-icon text-6xl transition-transform duration-300">💀</div>
+                            <h3 class="font-black text-lg mt-2">KINGA DHIDI YA USENGE</h3>
+                            <div class="tool-description text-sm text-gray-300">
+                                Zero matangazo. Zero virusi. Ni wewe, mboo yako, na video za kutombana tu. Hakuna wa kukukatishia uhondo.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="my-10 md:my-16">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl sm:text-5xl font-black uppercase font-display tracking-wider">USIKU HUU, WEWE NI NANI?</h2>
+                        <p class="mt-2 max-w-2xl mx-auto text-gray-400">
+                            Kuna aina mbili za wanaume. Mmoja anapiga punyeto kwa shida. Mwingine anatazama video za kutombana live. Chagua upande wako.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                        <div class="flex flex-col items-center">
+                            <h3 class="text-3xl font-black text-red-600 uppercase mb-4 font-display">MAISHA YA KILAZA 🤢</h3>
+                            <div class="phone-frame w-full max-w-sm h-[500px] sm:h-[600px] rounded-3xl p-2">
+                                <div class="phone-screen w-full h-full rounded-2xl relative">
+                                    <div class="cracked-overlay absolute inset-0 z-20 pointer-events-none"></div>
+                                    <div id="mshamba-screen-1" class="mshamba-screen-content active h-full flex-col items-center justify-center bg-white text-black p-4">
+                                        <svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <h4 class="font-bold text-xl mt-4">This site can't be reached</h4>
+                                        <p class="text-gray-500 text-sm">ERR_CONNECTION_TIMED_OUT</p>
+                                    </div>
+                                    <div id="mshamba-screen-2" class="mshamba-screen-content h-full flex-col items-center justify-center bg-red-900 text-white p-4">
+                                         <svg class="w-16 h-16 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                        <h4 class="font-bold text-2xl mt-4">WARNING!</h4>
+                                        <p class="text-red-200 text-sm">VIRUS DETECTED</p>
+                                    </div>
+                                    <div id="mshamba-screen-3" class="mshamba-screen-content h-full flex-col items-center justify-center bg-black">
+                                        <div class="w-16 h-16 border-4 border-gray-700 border-t-gray-400 rounded-full buffering-icon"></div>
+                                         <p class="text-gray-500 text-sm mt-4">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="mt-6 space-y-3 text-left text-gray-400 max-w-sm">
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-red-500">❌</span> <span>Ku-google "video za kutombana" na kuambulia matangazo ya kamari.</span></li>
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-red-500">❌</span> <span>Kuhangaika na VPN inayokata kila baada ya dakika mbili.</span></li>
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-red-500">❌</span> <span>Ku-download virusi vinavyojaza simu yako usenge mtupu.</span></li>
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-red-500">❌</span> <span>Kuishia kukojoa na picha za Instagram alizopiga jirani yako.</span></li>
+                            </ul>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <h3 class="text-3xl font-black text-green-500 uppercase mb-4 font-display">MAISHA YA KIFALME 🔥</h3>
+                            <div class="phone-frame w-full max-w-sm h-[500px] sm:h-[600px] rounded-3xl p-2 border-green-500/50">
+                                <div class="phone-screen w-full h-full rounded-2xl relative">
+                                    <div id="mnyama-screen-1" class="mnyama-screen-content active h-full bg-gray-900 p-2 grid grid-cols-3 gap-1">
+                                        <img src="https://placehold.co/100x150/000000/FFFFFF?text=HD" class="rounded object-cover">
+                                        <img src="https://placehold.co/100x150/111111/FFFFFF?text=HD" class="rounded object-cover">
+                                        <img src="https://placehold.co/100x150/222222/FFFFFF?text=HD" class="rounded object-cover">
+                                        <img src="https://placehold.co/100x150/333333/FFFFFF?text=HD" class="rounded object-cover">
+                                        <img src="https://placehold.co/100x150/444444/FFFFFF?text=HD" class="rounded object-cover">
+                                        <img src="https://placehold.co/100x150/555555/FFFFFF?text=HD" class="rounded object-cover">
+                                    </div>
+                                    <div id="mnyama-screen-2" class="mnyama-screen-content h-full bg-gray-900 p-4 flex flex-col">
+                                        <div class="bg-green-800/50 p-3 rounded-lg">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center font-bold text-white">😈</div>
+                                                <div class="ml-3">
+                                                    <p class="font-bold text-white">WANYAMA TU</p>
+                                                    <p class="text-xs text-gray-300">Video 18 mpya zimetumwa...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="mt-6 space-y-3 text-left text-gray-300 max-w-sm">
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-green-500">✅</span> <span>Kufungua link moja na kukutana na video 1000+ za HD zikikusubiri.</span></li>
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-green-500">✅</span> <span>Kuwa kwenye magroup ya WhatsApp yaliyojaa malaya na wanyama wenzako.</span></li>
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-green-500">✅</span> <span>Ku-download video yoyote unayoitaka na kuitunza kwenye simu yako milele.</span></li>
+                                <li class="flex items-start"><span class="mr-3 mt-1 text-green-500">✅</span> <span>Kujibu "Niko busy" kwa demu wako, huku unakojoa kimyakimya.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center mt-16">
+                        <button id="comparison-cta-button" class="cta-button open-modal-trigger bg-green-600 text-white font-black text-2xl uppercase py-5 px-12 rounded-lg shadow-lg shadow-green-900/50 transition-all duration-300 hover:scale-110">
+                            <span id="cta-text">Acha Umasikini, Chagua Kuwa Mnyama</span>
+                        </button>
+                    </div>
+                </section>
+                
+                <section class="my-10 md:my-16 w-full">
+                    <div class="text-center mb-8 px-4">
+                        <h2 class="text-3xl sm:text-4xl font-black uppercase">STATUS ZA WANYAMA LIVE 24/7</h2>
+                        <p class="mt-2 max-w-xl mx-auto text-gray-400">
+                            Huku hakuna kulala. Hizi ni video halisi kutoka kwa wanachama wetu, sasa hivi. Wakati wewe unasoma haya, wao wanatombana.
+                        </p>
+                    </div>
+                    <div class="marquee-container relative flex overflow-hidden select-none">
+                        <div id="scroller" class="marquee-content flex-shrink-0 flex items-center justify-around min-w-full">
+                            </div>
+                    </div>
+                </section>
+
+                <section class="my-10 md:my-16">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl sm:text-4xl font-black uppercase">ACHA KUZURURA MITAANI,</h2>
+                        <h3 class="text-3xl sm:text-4xl font-black uppercase text-red-500">MALAYA WOTE WAKO HAPA.</h3>
+                        <p class="mt-2 max-w-xl mx-auto text-gray-400">
+                            Hii ni rada yako ya siri. Kila kidoti chekundu unachokiona ni kuma inayosubiri mboo. Gusa eneo unalotaka, chagua demu wako.
+                        </p>
+                    </div>
+                    <div class="text-center mb-4 bg-black/50 py-2 px-4 rounded-lg max-w-xs mx-auto">
+                        <span class="font-bold text-green-400">MALAYA ONLINE SASA: </span>
+                        <span id="hooker-count" class="font-display text-4xl text-white">127</span>
+                    </div>
+                    <div class="map-container relative w-full aspect-square max-w-lg mx-auto rounded-full shadow-2xl shadow-red-900/40">
+                        <div class="radar-grid"></div>
+                        <div class="radar-circle" style="width: 25%; height: 25%;"></div>
+                        <div class="radar-circle" style="width: 50%; height: 50%;"></div>
+                        <div class="radar-circle" style="width: 75%; height: 75%;"></div>
+                        <div class="radar-circle" style="width: 100%; height: 100%;"></div>
+                        <div class="radar-sweep"></div>
+                        <div class="hotspot absolute z-10" style="top: 45%; left: 35%;">
+                            <span class="text-4xl">💋</span>
+                            <div class="hotspot-popup absolute bottom-full left-1/2 -translate-x-1/2 w-48 bg-black/80 backdrop-blur-sm border border-red-500 rounded-lg p-2 text-center mb-2">
+                                <img src="https://placehold.co/150x150/000/fff?text=SURA+BLUR" class="w-16 h-16 rounded-full mx-auto border-2 border-red-500" style="filter: blur(3px);">
+                                <h4 class="font-bold mt-1">TOTO LA SINZA</h4>
+                                <p class="text-xs text-green-400">🟢 Online Sasa</p>
+                                <p class="text-xs text-gray-300 italic mt-1">"Niko tayari kwa kazi..."</p>
+                            </div>
+                        </div>
+                        <div class="hotspot absolute z-10" style="top: 30%; left: 65%;">
+                            <span class="text-4xl">👠</span>
+                             <div class="hotspot-popup absolute bottom-full left-1/2 -translate-x-1/2 w-48 bg-black/80 backdrop-blur-sm border border-red-500 rounded-lg p-2 text-center mb-2">
+                                <img src="https://placehold.co/150x150/111/fff?text=SURA+BLUR" class="w-16 h-16 rounded-full mx-auto border-2 border-red-500" style="filter: blur(3px);">
+                                <h4 class="font-bold mt-1">MASAKI QUEEN</h4>
+                                <p class="text-xs text-green-400">🟢 Online Sasa</p>
+                                <p class="text-xs text-gray-300 italic mt-1">"Bei poa, karibu DM..."</p>
+                            </div>
+                        </div>
+                        <div class="hotspot absolute z-10" style="top: 60%; left: 80%;">
+                            <span class="text-4xl">💋</span>
+                             <div class="hotspot-popup absolute bottom-full left-1/2 -translate-x-1/2 w-48 bg-black/80 backdrop-blur-sm border border-red-500 rounded-lg p-2 text-center mb-2">
+                                <img src="https://placehold.co/150x150/222/fff?text=SURA+BLUR" class="w-16 h-16 rounded-full mx-auto border-2 border-red-500" style="filter: blur(3px);">
+                                <h4 class="font-bold mt-1">BEACH BABY</h4>
+                                <p class="text-xs text-yellow-400">🟡 Busy Kidogo</p>
+                                <p class="text-xs text-gray-300 italic mt-1">"Ngoja nimalize mteja..."</p>
+                            </div>
+                        </div>
+                        <div class="hotspot absolute z-10" style="top: 70%; left: 40%;">
+                            <span class="text-4xl">👠</span>
+                            <div class="hotspot-popup absolute top-full left-1/2 -translate-x-1/2 w-48 bg-black/80 backdrop-blur-sm border border-red-500 rounded-lg p-2 text-center mt-2">
+                                <img src="https://placehold.co/150x150/333/fff?text=SURA+BLUR" class="w-16 h-16 rounded-full mx-auto border-2 border-red-500" style="filter: blur(3px);">
+                                <h4 class="font-bold mt-1">KARIAKOO FIRE</h4>
+                                <p class="text-xs text-green-400">🟢 Online Sasa</p>
+                                <p class="text-xs text-gray-300 italic mt-1">"Nafanya outcall tu..."</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="my-10 md:my-16">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl sm:text-4xl font-black uppercase">ONA WANYAMA WAKICHAFUA GROUP</h2>
+                        <h3 class="text-3xl sm:text-4xl font-black uppercase text-yellow-400">LIVE SASA HIVI.</h3>
+                        <p class="mt-2 max-w-2xl mx-auto text-gray-400">
+                            Hii ni live feed kutoka kwenye group letu la VIP. Wakati wewe uko nje, wao wanashare video na namba za malaya. Soma chat zao, uone unachokosa.
+                        </p>
+                    </div>
+                    <div class="showcase-container rounded-lg shadow-2xl shadow-yellow-900/40 p-4 sm:p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="md:col-span-2">
+                                <div class="relative aspect-video bg-black rounded-md overflow-hidden border-2 border-gray-700">
+                                    <video class="glitch-video w-full h-full object-cover" autoplay loop muted playsinline>
+                                         <source src="https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452687/13452687-preview.webm" type="video/webm">
+                                    </video>
+                                    <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded animate-pulse">VIDEO MPYA NDANI YA GROUP</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <h4 class="font-bold text-center mb-2 uppercase">LIVE CHAT YA WANYAMA</h4>
+                                <div id="chat-feed" class="chat-feed bg-black/50 h-64 rounded-md p-2 flex flex-col-reverse overflow-y-auto">
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button class="open-modal-trigger join-chat-button bg-green-600 text-white font-black text-xl sm:text-2xl uppercase py-4 px-8 rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
+                                Nataka Kujiunga na Chat (TSH 5,000)
                             </button>
                         </div>
-
-                        <!-- Thumbnails Carousel -->
-                        <div id="video-thumbnails" class="flex overflow-x-auto space-x-3 py-2 no-scrollbar">
-                            <!-- Thumbnails will be injected here -->
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Value Proposition Section -->
-                <section class="mt-20">
-                    <h2 class="text-3xl font-bold text-center mb-8">Unapotoa Buku 5, Unanunua Haya Mambo:</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 max-w-3xl mx-auto">
-                        <!-- Item 1 -->
-                        <div class="flex items-center gap-4">
-                            <div class="text-4xl">🔥</div>
-                            <div class="text-left">
-                                <h3 class="font-bold text-white">Daily Dose ya Nyege</h3>
-                                <p class="text-gray-400 text-sm">Video 20+ mpya kila siku. Simu yako haitapumzika.</p>
-                            </div>
-                        </div>
-                        <!-- Item 2 -->
-                        <div class="flex items-center gap-4">
-                            <div class="text-4xl">📹</div>
-                            <div class="text-left">
-                                <h3 class="font-bold text-white">Quality ya HD, Utamu Halisi</h3>
-                                <p class="text-gray-400 text-sm">Video zote ni clear, utaona kila kitu. Sio video za 'blurry' za Xvideos.</p>
-                            </div>
-                        </div>
-                        <!-- Item 3 -->
-                        <div class="flex items-center gap-4">
-                            <div class="text-4xl">🤫</div>
-                            <div class="text-left">
-                                <h3 class="font-bold text-white">Download & Tuma Bila Wasiwasi</h3>
-                                <p class="text-gray-400 text-sm">Pata uwezo wa kudownload na kuwatumia marafiki zako kimyakimya.</p>
-                            </div>
-                        </div>
-                        <!-- Item 4 -->
-                        <div class="flex items-center gap-4">
-                            <div class="text-4xl">💬</div>
-                            <div class="text-left">
-                                <h3 class="font-bold text-white">Direct Access kwa Wanachama</h3>
-                                <p class="text-gray-400 text-sm">Chat na wanachama wengine, badilishana namba na picha.</p>
-                            </div>
-                        </div>
-                         <!-- Item 5 -->
-                        <div class="flex items-center gap-4 md:col-span-2 md:justify-center">
-                            <div class="text-4xl">🚫</div>
-                            <div class="text-left">
-                                <h3 class="font-bold text-white">Hakuna Virusi, Hakuna Matangazo</h3>
-                                <p class="text-gray-400 text-sm">Safe & clean. Ni raha zako tu na simu yako.</p>
-                            </div>
-                        </div>
                     </div>
                 </section>
 
-                <!-- Before/After Section -->
-                <section class="mt-20">
-                    <h2 class="text-3xl font-bold text-center mb-8">Upande Gani wa Maisha Upo Sasa Hivi?</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                        <!-- Left Column -->
-                        <div class="bg-red-900/30 border border-red-500 rounded-xl p-6">
-                            <h3 class="text-2xl font-bold text-red-400 mb-4">MAISHA YA PUNYETO 😫</h3>
-                            <ul class="space-y-3 text-left">
-                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Kutafuta video kwenye ma-site ya ajabu.</span></li>
-                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Ku-download virusi badala ya video.</span></li>
-                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Kuishia na picha za 'Photoshop'.</span></li>
-                                <li class="flex items-start"><span class="mr-2">❌</span> <span>Kujisikia mpweke na mwenye hamu.</span></li>
-                            </ul>
-                        </div>
-                        <!-- Right Column -->
-                        <div class="bg-green-900/30 border border-green-500 rounded-xl p-6">
-                            <h3 class="text-2xl font-bold text-green-400 mb-4">MAISHA YA PENZISHATA 😈</h3>
-                            <ul class="space-y-3 text-left">
-                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kufungua simu na kukutana na video mpya.</span></li>
-                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kuwa kwenye community ya watu wenye nyege kama wewe.</span></li>
-                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kuona video halisi za Kibongo, bila sensor.</span></li>
-                                <li class="flex items-start"><span class="mr-2">✅</span> <span>Kuridhisha hamu yako papo hapo.</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Reels Carousel Section -->
-                <section class="mt-20 w-full overflow-hidden">
-                    <h2 class="text-3xl font-bold text-center mb-8">Wanachama Wetu Live... Hakuna Kujificha Hapa. 👀</h2>
-                    <div class="carousel-container relative w-full">
-                        <div id="reels-scroller" class="flex scrolling-wrapper">
-                            <!-- Videos will be injected here by JavaScript -->
-                        </div>
-                    </div>
-                </section>
-
-                <!-- How to Join Section -->
-                <section class="mt-20">
-                    <h2 class="text-3xl font-bold text-center mb-12">Mchakato Mzima Hauchukui Dakika 2.</h2>
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-center gap-6 md:gap-0">
-                        <!-- Step 1 -->
-                        <div class="flex flex-col items-center text-center w-full md:w-1/4">
-                            <div class="bg-pink-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold mb-3">1</div>
-                            <h3 class="font-semibold">Bonyeza "PATA ACCESS"</h3>
-                        </div>
-
-                        <!-- Arrow 1 -->
-                        <div class="hidden md:block mx-4">
-                            <svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 10H99" stroke="#4A5568" stroke-width="2" stroke-dasharray="4 4"/>
-                                <path d="M90 1L99 10L90 19" stroke="#4A5568" stroke-width="2"/>
-                            </svg>
-                        </div>
-
-                        <!-- Step 2 -->
-                        <div class="flex flex-col items-center text-center w-full md:w-1/4">
-                            <div class="bg-purple-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold mb-3">2</div>
-                            <h3 class="font-semibold">Lipa Elfu 5 tu</h3>
-                            <div class="flex justify-center mt-2">
-                                <img src="https://i.ibb.co/jvqbh208/zenopay-logo.png" alt="ZenoPay Payment Methods" class="h-8">
-                            </div>
-                        </div>
-
-                        <!-- Arrow 2 -->
-                         <div class="hidden md:block mx-4">
-                            <svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 10H99" stroke="#4A5568" stroke-width="2" stroke-dasharray="4 4"/>
-                                <path d="M90 1L99 10L90 19" stroke="#4A5568" stroke-width="2"/>
-                            </svg>
-                        </div>
-
-                        <!-- Step 3 -->
-                        <div class="flex flex-col items-center text-center w-full md:w-1/4">
-                            <div class="bg-pink-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold mb-3">3</div>
-                            <h3 class="font-semibold">Fungua Link & Anza Raha</h3>
-                             <svg class="w-6 h-6 text-gray-400 mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Testimonials Section -->
-                <section class="mt-20 w-full">
-                    <h2 class="text-3xl font-bold text-center mb-8">Waliolipia Hawajutii... Soma Wanachosema:</h2>
+                <section class="my-10 md:my-16 w-full">
+                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Waliolipia Hawajutii...</h3>
                     <div class="relative max-w-3xl mx-auto">
                         <div id="testimonial-slider" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar">
-                            <!-- Testimonial 1 -->
-                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
-                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
-                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
-                                    <p class="font-handwriting text-2xl mt-4">"Nililipia kwa wasiwasi, dah! Kile nilichokikuta... akili yangu ilisimama. Content ni za ukweli, sio uongo."</p>
-                                    <p class="text-right mt-4 font-bold text-pink-400">- @Juma_la_Moto</p>
-                                </div>
                             </div>
-                            <!-- Testimonial 2 -->
-                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
-                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
-                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
-                                    <p class="font-handwriting text-2xl mt-4">"Mimi kila nikiwa na hamu naingia hapa. Kila siku kuna kitu kipya. Imekuwa kama sehemu ya maisha yangu."</p>
-                                    <p class="text-right mt-4 font-bold text-pink-400">- Anonymous</p>
-                                </div>
-                            </div>
-                             <!-- Testimonial 3 -->
-                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
-                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
-                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
-                                    <p class="font-handwriting text-2xl mt-4">"Kupitia group la 'Gumzo za Usiku', nimepata namba mbili za uhakika. Hapa ni zaidi ya video."</p>
-                                    <p class="text-right mt-4 font-bold text-pink-400">- Sele, Sinza</p>
-                                </div>
-                            </div>
-                             <!-- Testimonial 4 -->
-                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
-                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
-                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
-                                    <p class="font-handwriting text-2xl mt-4">"Nimechoka na video za tochi. Huku unapata HD kabisa, unaona kila details. Elfu 5 ni ndogo sana kwa uhondo huu."</p>
-                                    <p class="text-right mt-4 font-bold text-pink-400">- @Mzee_wa_Quality</p>
-                                </div>
-                            </div>
-                             <!-- Testimonial 5 -->
-                            <div class="testimonial-slide flex-shrink-0 w-full p-4 snap-center">
-                                <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700">
-                                    <p class="text-4xl text-yellow-400">⭐️⭐️⭐️⭐️⭐️</p>
-                                    <p class="font-handwriting text-2xl mt-4">"Napenda 'Video za Kichakani'. Zinaonyesha uhalisia, hakuna kuigiza. Ni kama uko pale unashuhudia live."</p>
-                                    <p class="text-right mt-4 font-bold text-pink-400">- David B.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Navigation Buttons -->
-                        <button id="prev-testimonial" class="absolute top-1/2 left-0 -translate-y-1/2 bg-black/20 hover:bg-black/50 p-2 rounded-full">
+                        <button id="prev-testimonial" class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-4 bg-black/30 hover:bg-black/60 p-2 rounded-full transition-colors hidden sm:block">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         </button>
-                        <button id="next-testimonial" class="absolute top-1/2 right-0 -translate-y-1/2 bg-black/20 hover:bg-black/50 p-2 rounded-full">
+                        <button id="next-testimonial" class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-4 bg-black/30 hover:bg-black/60 p-2 rounded-full transition-colors hidden sm:block">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </button>
                     </div>
                 </section>
 
-                <!-- FINAL CTA SECTION -->
-                <section class="mt-20 w-full">
-                    <div class="bg-gray-900/60 rounded-2xl p-8 md:p-12 border border-pink-500/50 shadow-2xl shadow-pink-500/20">
-                        <h2 class="text-4xl font-extrabold text-center">NYEGE ZIMEPANDA? MALIZA HAMU YAKO SASA HIVI!</h2>
-                        <p class="text-center text-gray-400 mt-4">OFA YA KUJIUNGA KWA BEI HII INAISHIA BAADA YA:</p>
-                        <div class="my-4 flex justify-center items-center gap-2 text-4xl font-mono font-bold text-yellow-300">
-                            <span id="minutes">14</span>
-                            <span>:</span>
-                            <span id="seconds">59</span>
+                <section class="my-10 md:my-16 w-full">
+                    <div class="gate-container rounded-2xl p-6 sm:p-10 text-center max-w-3xl mx-auto">
+                        <h2 class="text-4xl sm:text-6xl font-black uppercase font-display tracking-wider text-gray-200">UMEFika Mwisho.</h2>
+                        <h3 class="text-4xl sm:text-6xl font-black uppercase font-display text-red-500">UNAINGIA AU UNARUDI KWENYE PUNYETO?</h3>
+                        <div class="my-6">
+                            <p class="uppercase font-bold text-yellow-400">GETI LINAFUNGWA... PRESHA INAPANDA!</p>
+                            <div class="w-full max-w-md mx-auto bg-gray-700 rounded-full h-4 mt-2 border-2 border-gray-600">
+                                <div id="pressure-bar" class="bg-gradient-to-r from-yellow-400 to-red-600 h-full rounded-full" style="width: 85%; transition: width 1s linear;"></div>
+                            </div>
                         </div>
-                        <p class="text-center text-yellow-400 font-semibold mt-2">Watu 500 wa kwanza pekee. Zimebaki nafasi 31.</p>
-                        <p class="text-center text-gray-300 mt-6">Kwa <span class="font-bold">TSh 5,000</span> tu, fungua dunia yote ya utamu papo hapo.</p>
-                        <button class="open-modal-trigger bg-green-500 hover:bg-green-400 text-white font-bold py-5 px-8 rounded-lg text-xl transition duration-300 transform hover:scale-105 shadow-lg shadow-green-500/50 w-full max-w-lg mx-auto mt-6 animate-pulse">
-                            NIUNGANISHE NA RAHA KWA TSH 5,000! 💦
+                        <div class="bg-black/50 rounded-lg p-3 max-w-sm mx-auto">
+                            <p class="text-lg font-bold">WANYAMA WALIOMO NDANI:</p>
+                            <p class="font-display text-5xl text-green-400 tracking-wider">
+                                <span id="headcount">469</span> / 500
+                            </p>
+                            <p class="text-xs text-gray-400">NAFASI ZA WANYAMA ZINAKARIBIA KUJAA</p>
+                        </div>
+                        <p class="text-lg mt-6">Kwa <span class="font-bold text-yellow-400">TSh 5,000</span> tu, fungua geti la unyama milele.</p>
+                        <button class="open-modal-trigger final-cta mt-6 bg-green-600 text-white font-black text-2xl uppercase py-5 px-12 rounded-lg shadow-lg">
+                            FUNGUA GETI LA UNYAMA
                         </button>
-                        <div class="flex justify-center mt-6">
-                           <img src="https://i.ibb.co/jvqbh208/zenopay-logo.png" alt="ZenoPay Payment Methods" class="h-10">
-                        </div>
-                        <p class="text-xs text-gray-500 mt-2">Malipo ya Siri. Hakuna atakayejua transaction hii.</p>
+                        <p class="text-xs text-gray-500 mt-2">Malipo ya Siri. Hakuna Atakayejua.</p>
                     </div>
                 </section>
 
             </div>
-
         </main>
 
-        <!-- Footer -->
-        <footer class="w-full py-6 px-4 sm:px-8 mt-12">
-            <div class="container mx-auto text-center text-gray-400">
-                <p>&copy; 2024 PenziShata. Haki zote zimehifadhiwa.</p>
-                <div class="mt-2">
-                    <a href="#" class="hover:text-white mx-2 text-sm">Vigezo na Masharti</a>
-                    <span class="text-gray-500">•</span>
-                    <a href="#" class="hover:text-white mx-2 text-sm">Sera ya Faragha</a>
+        <footer class="w-full py-8 px-4 sm:px-8 mt-12 border-t border-white/10">
+            <div class="container mx-auto text-center text-[var(--text-muted)]">
+                <p>&copy; 2025 PenziShata. Haki zote zimehifadhiwa.</p>
+                <div class="mt-2 text-sm">
+                    <a href="#" class="hover:text-white mx-2">Vigezo & Masharti</a>
+                    <span class="text-gray-600">•</span>
+                    <a href="#" class="hover:text-white mx-2">Sera ya Faragha</a>
                 </div>
             </div>
         </footer>
 
     </div>
     
-    <!-- Payment Modal (Initially Hidden) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50">
+        </div>
+    
     <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
          <div id="payment-box" class="w-full max-w-sm bg-gray-200 rounded-lg shadow-2xl p-8 relative">
             <button id="close-modal" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-3xl font-light">&times;</button>
             
-            <!-- SIMPLIFIED Payment View -->
             <div id="form-view" class="text-center">
                 <div class="flex justify-center mb-4">
                     <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">18+ WAKUBWA TU</span>
@@ -444,167 +875,405 @@
         </div>
     </div>
 
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Video Shuffling Logic ---
-            const videoElement = document.getElementById('background-video');
-            const bgVideoSources = [
-                "https://www.mzansifun.com/upload/videos/2023/11/ZvAGlsS9EEVt5BaQot1o_09_e093812e031fcf81609bd2cf2859bae0_video_shorts_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2025/01/LiDzUzkZI7hnzANeVR2t_14_4a8167ed6da0d86b12a5f974486db989_video_shorts_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2023/07/z6bQwaqRf6COmh6JXdTG_12_9bcbfa99a0300e567080048708c288f0_video_shorts_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/03/tmM3Aem6cuCh63Wl4phL_08_4031729f5bb2e587e4a0f3e96bbebaab_video_shorts_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2023/08/2Im4uqMcPrBbgFspc5JO_10_e0757fc756185d134898dbb9a45079be_video_shorts_360p_converted.mp4"
-            ];
-            const randomBgIndex = Math.floor(Math.random() * bgVideoSources.length);
-            const randomBgVideo = bgVideoSources[randomBgIndex];
-            const sourceElement = document.createElement('source');
-            sourceElement.src = randomBgVideo;
-            sourceElement.type = 'video/mp4';
-            if (videoElement) {
-                videoElement.appendChild(sourceElement);
-                videoElement.load();
-            }
 
-            // --- Hero Video Logic ---
+            // --- Data Sources ---
+            const reelVideoSources = [
+                "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452687/13452687-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452678/13452678-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/124/12444399/12444399-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452698/13452698-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/130/13060359/13060359-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12040346/12040346-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/131/13172572/13172572-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/131/13172048/13172048-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/131/13172064/13172064-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/13/133/13382197/13382197-preview.webm"
+            ];
+            
+            const engongaVideoSources = [
+                "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/124/12463982/12463982-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12097517/12097517-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/121/12165824/12165824-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/123/12379453/12379453-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12097526/12097526-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12097349/12097349-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/122/12271419/12271419-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/121/12116404/12116404-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12099511/12099511-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/121/12165715/12165715-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/123/12379994/12379994-preview.webm", "https://static-eu-cdn.eporner.com/thumbs/static4/1/12/124/12429864/12429864-preview.webm"
+            ];
+
+            const testimonials = [
+                { quote: "Nililipia kwa wasiwasi, dah! Kile nilichokikuta... akili yangu ilisimama. Content ni za ukweli, sio uongo.", author: "@Juma_la_Moto" },
+                { quote: "Mimi kila nikiwa na hamu naingia hapa. Kila siku kuna kitu kipya. Imekuwa kama sehemu ya maisha yangu.", author: "Anonymous" },
+                { quote: "Kupitia group la 'Gumzo za Usiku', nimepata namba mbili za uhakika. Hapa ni zaidi ya video.", author: "Sele, Sinza" },
+                { quote: "Nimechoka na video za tochi. Huku unapata HD kabisa, unaona kila details. Elfu 5 ni ndogo sana kwa uhondo huu.", author: "@Mzee_wa_Quality" },
+                { quote: "Napenda 'Video za Kichakani'. Zinaonyesha uhalisia, hakuna kuigiza. Ni kama uko pale unashuhudia live.", author: "David B." }
+            ];
+
+            const groupsData = [
+                { id: 1, title: 'MIKUNDU YA WAKE ZA WATU 💦', description: 'Video za wake za watu waliochoka na waume zao, wakitafuta mboo za pembeni. Utamu wa dhambi uko hapa. 🤫🔥', buttonText: 'Ingia Dhambini', hasTyping: false, videoSrc: 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/138/13832852/13832852-preview.webm' },
+                { id: 2, title: 'KUMA ZA MA-VIDEO QUEEN 🍑', description: 'Wale mademu unaowaona kwenye video za Bongo Flava? Humu tuna video zao za chumbani wakinyonywa mboo na wasanii. 🎬🍆', buttonText: 'Ona Nyuma ya Camera', hasTyping: false, videoSrc: 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/131/13172048/13172048-preview.webm' },
+                { id: 3, title: 'VILIO VYA GESTI 🥵', description: 'Hili ni group la sauti tu. Vaa headphone usikie malaya akilia "ingiza yote!". Sauti za kutombana live kutoka gesti za Sinza. 🎧💦', buttonText: 'Sikiliza Kojo', hasTyping: true, videoSrc: 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/129/12942650/12942650-preview.webm' },
+                { id: 4, title: 'KUTOMBANA KWA NGUVU 💪', description: 'Unapenda mambo magumu? Hapa ni video za watu wakitombana kinyama. Kupigana makofi, kuvutana nywele, na kuliana live. ⛓️🩸', buttonText: 'Tazama Ukatili', hasTyping: false, videoSrc: 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13487257/13487257-preview.webm' },
+                { id: 5, title: 'USAFI WA NDANI (KUSAFISHA KUMA) 🧼', description: 'Video za mademu wakijisafisha na kujichezea. Wanavyojipiga picha za uchi na kujirekodi wakijichua. Ni maandalizi ya kutombwa. 👀💦', buttonText: 'Ona Maandalizi', hasTyping: false, videoSrc: 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/129/12908104/12908104-preview.webm' },
+                { id: 6, title: 'KITUO CHA DALA DALA 🚌', description: 'Video za kutombana kwenye maeneo ya wazi. Kwenye daladala, vichochoroni, na kwenye vibanda vya chipsi. Utamu wa hatari. 😈🔥', buttonText: 'Panda Daladala', hasTyping: false, videoSrc: 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/130/13060204/13060204-preview.webm' }
+            ];
+
+            // --- Element References ---
             const heroVideoPlayer = document.getElementById('hero-video-player');
-            const heroVideoSources = [
-                "https://www.mzansifun.com/upload/videos/2025/06/QOwTv2iwlFU6ZNnZmjfy_13_773d96faaa52736b2d416f71a2965e76_video_480p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2025/03/MpeSDj3OX36l5goWdsxN_04_09f9e925364d67e2f336cdb62996c3d6_video_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2020/04/x19lsjJzGemVL7NN5jbz_12_69ef48212eb02ecc5398b86ce7cb8f3e_video_720p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/09/42U43Ad8x9srqCj3KdnR_10_16f5ff82e1c2cd5a0fb1fc6b6dabe887_video_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/08/mSwtesdw9CXODgBCxnQM_31_2b0cf34b1f6a225c0422cd16d895b8ab_video_720p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/10/9LGoR4DkDSpRfrrDaWIQ_01_6feec00dac7342db72c1b8bd257cc6d3_video_360p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2025/03/dqvEGLmAqHq9WWDHxDp7_06_03e32769f84eafdec3a733cbf7674a0f_video_360p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/08/X8gYxJOfLDmS5DmqiqmD_31_d2b53974d4f19619472ef4feb11be1e0_video_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2025/07/JaWt5iuNusfFttXf4AmC_26_3b4230309607efc318814b9733423660_video_240p_converted.mp4"
-            ];
-             if (heroVideoPlayer) {
-                const randomHeroIndex = Math.floor(Math.random() * heroVideoSources.length);
-                heroVideoPlayer.src = heroVideoSources[randomHeroIndex];
-                heroVideoPlayer.load();
-            }
-
-
-            // --- Modal Logic ---
+            const challengeVideo = document.getElementById('challenge-video');
+            const playOverlay = document.getElementById('play-overlay');
+            const interruptionOverlay = document.getElementById('interruption-overlay');
+            const cctvThumbnails = document.getElementById('cctv-thumbnails');
+            const finalCtaButton = document.getElementById('final-cta-button');
+            const testimonialSlider = document.getElementById('testimonial-slider');
+            const scroller = document.getElementById('scroller');
+            const groupsGrid = document.getElementById('groups-grid');
+            const vaultContainer = document.getElementById('vault-container');
+            const vaultButton = document.getElementById('vault-button');
+            const buttonContainer = document.getElementById('button-container');
+            const vaultHeader = document.getElementById('vault-header');
+            const openedText = document.getElementById('opened-text');
+            const insideVaultGrid = document.getElementById('vault-grid');
+            const pressureBar = document.getElementById('pressure-bar');
+            const headcount = document.getElementById('headcount');
+            const hookerCount = document.getElementById('hooker-count');
+            const chatFeed = document.getElementById('chat-feed');
+            
+            // Modal elements
             const paymentModal = document.getElementById('payment-modal');
             const closeModalButton = document.getElementById('close-modal');
-
-            const openModal = () => paymentModal.classList.remove('hidden');
-            const closeModal = () => paymentModal.classList.add('hidden');
-
-            const attachOpenModalListeners = () => {
-                 document.querySelectorAll('.open-modal-trigger').forEach(trigger => {
-                    trigger.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        openModal();
-                    });
-                });
-            }
-            attachOpenModalListeners(); 
-
-            if(closeModalButton) {
-                closeModalButton.addEventListener('click', closeModal);
-            }
-            
-            if(paymentModal) {
-                paymentModal.addEventListener('click', (event) => {
-                    if (event.target === paymentModal) {
-                        closeModal();
-                    }
-                });
-            }
-            
-            // --- Video Player & Thumbnails Logic ---
-            const mainVideoPlayer = document.getElementById('main-video-player');
-            const mainPlayButton = document.getElementById('main-play-button');
-            const thumbnailsContainer = document.getElementById('video-thumbnails');
-            const teaserVideoSources = [
-                "https://www.mzansifun.com/upload/videos/2025/06/QOwTv2iwlFU6ZNnZmjfy_13_773d96faaa52736b2d416f71a2965e76_video_480p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2025/03/MpeSDj3OX36l5goWdsxN_04_09f9e925364d67e2f336cdb62996c3d6_video_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2020/04/x19lsjJzGemVL7NN5jbz_12_69ef48212eb02ecc5398b86ce7cb8f3e_video_720p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/09/42U43Ad8x9srqCj3KdnR_10_16f5ff82e1c2cd5a0fb1fc6b6dabe887_video_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/08/mSwtesdw9CXODgBCxnQM_31_2b0cf34b1f6a225c0422cd16d895b8ab_video_720p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/10/9LGoR4DkDSpRfrrDaWIQ_01_6feec00dac7342db72c1b8bd257cc6d3_video_360p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2025/03/dqvEGLmAqHq9WWDHxDp7_06_03e32769f84eafdec3a733cbf7674a0f_video_360p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2024/08/X8gYxJOfLDmS5DmqiqmD_31_d2b53974d4f19619472ef4feb11be1e0_video_240p_converted.mp4",
-                "https://www.mzansifun.com/upload/videos/2025/07/JaWt5iuNusfFttXf4AmC_26_3b4230309607efc318814b9733423660_video_240p_converted.mp4"
-            ];
-            
-            if (thumbnailsContainer) {
-                teaserVideoSources.forEach(src => {
-                    const videoThumb = document.createElement('video');
-                    videoThumb.className = 'w-28 h-20 object-cover rounded-md cursor-pointer border-2 border-transparent hover:border-pink-500 transition-all';
-                    videoThumb.src = src;
-                    videoThumb.muted = true;
-                    
-                    thumbnailsContainer.appendChild(videoThumb);
-
-                    videoThumb.addEventListener('click', () => {
-                        if(mainVideoPlayer) {
-                            mainVideoPlayer.src = src;
-                            mainVideoPlayer.pause();
-                        }
-                        if(mainPlayButton) mainPlayButton.classList.remove('hidden');
-                    });
-                });
-            }
-
-            const playMainVideo = () => {
-                if(!mainVideoPlayer) return;
-                mainVideoPlayer.play().then(() => {
-                    if(mainPlayButton) mainPlayButton.classList.add('hidden');
-                    setTimeout(() => {
-                        mainVideoPlayer.pause();
-                        openModal();
-                    }, 10000); // 10 seconds
-                }).catch(e => console.log("Play interrupted or failed."));
-            };
-            
-            if(mainPlayButton) {
-                mainPlayButton.addEventListener('click', playMainVideo);
-            }
-            if(mainVideoPlayer) {
-                mainVideoPlayer.addEventListener('click', playMainVideo);
-            }
-
-
-            // --- Reels Carousel Video Logic ---
-            const reelsScroller = document.getElementById('reels-scroller');
-            const reelVideoSources = [
-                "https://www.mzansifun.com/upload/videos/2025/05/sY97MeomSLRKuEGCMLu4_21_dfd4d5f54b75f029d090426b0bd47c95_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/12/JHOqoYTNAZ6lhBcBQYSb_10_f2dcc3801e4738a4420eb3300db89abd_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/06/2t6k3Omq3Jq7Po9M1gdy_28_d235ebbf915f31c2c1193f47a73937d2_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/05/AQkZ1Rsc6LkMo27MDFSe_29_ee87196bd45ada354c7f23f204465a51_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/09/B6AeMpOpq9JEY8Y4bIaH_08_0f8856671a15492841f1f175b1b428c0_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/02/bBG6kYa6qm2pvWHcuwNO_10_d75a7a0b1c3f2fec159c1944ec4c0c69_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/03/CoXYhDZUwKHlBgYwdnMk_16_41afd4a0fc42c5dab4ac370defb6b1ae_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/02/ArfSMSnYYDCpkRQEzEJh_03_421dec922786f605f38936d3c836b9c8_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2022/10/XhDj7hJ3JqariJVqd7qz_30_be21bc227d1ac518042bd14c967ac585_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/03/zEbg531qd6SwNYrzjteC_17_d3234843a272bf44298c0a29059745f7_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2024/07/lOQQAPoLJuBQG14BX5pZ_28_f10f964ab90c97ca16903078eab7e918_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2022/10/NSp4OslEfrnzGlvPmMUi_30_3c633bfab5920582cb3971eafa2b3aef_video_shorts_360p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/05/BFaHb57lv5SmXRdw78bI_19_197f434a7d0f820a97351bca03b616b6_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2023/07/H3oWbBOEroagbfbBgFgh_08_7579be3836ad4b9acd97914dedf11858_video_shorts_240p_converted.mp4", "https://www.mzansifun.com/upload/videos/2025/01/eXQWkKKLClA5bf6UlfzQ_07_866fde37beceeba5b84a10e19e3c639c_video_shorts_240p_converted.mp4"
-            ];
-            
-            if (reelsScroller) {
-                reelVideoSources.sort(() => 0.5 - Math.random());
-                const selectedVideos = reelVideoSources.slice(0, 15);
-                const duplicatedVideos = [...selectedVideos, ...selectedVideos]; 
-
-                duplicatedVideos.forEach((src) => {
-                    const videoContainer = document.createElement('div');
-                    videoContainer.className = 'open-modal-trigger cursor-pointer flex-shrink-0 mx-2';
-
-                    const video = document.createElement('video');
-                    video.className = 'w-40 h-64 object-cover rounded-lg shadow-lg border-2 border-pink-500/50';
-                    video.src = src;
-                    video.muted = true;
-                    video.loop = true;
-                    video.playsInline = true;
-                    
-                    videoContainer.appendChild(video);
-                    reelsScroller.appendChild(videoContainer);
-
-                    video.play().catch(e => console.log("Autoplay was prevented."));
-                });
-                attachOpenModalListeners(); 
-            }
-
-
-            // --- SIMPLIFIED Payment Logic ---
             const proceedButton = document.getElementById('proceed-to-pay-button');
             const payButtonText = document.getElementById('pay-button-text');
             const payButtonSpinner = document.getElementById('pay-button-spinner');
 
+
+            // --- Utility Functions ---
+            const shuffleArray = (array) => array.sort(() => 0.5 - Math.random());
+            
+            // --- Initialization & Event Listeners ---
+
+            // 1. Setup Hero Video
+            if (heroVideoPlayer) {
+                const randomHeroVideo = shuffleArray([...engongaVideoSources])[0];
+                document.getElementById('hero-video-source').src = randomHeroVideo;
+                heroVideoPlayer.load();
+            }
+
+            // 2. Setup Groups Section
+            if (groupsGrid) {
+                groupsData.forEach(group => {
+                    const card = document.createElement('div');
+                    card.className = 'group-card bg-[#1a1a1a] border border-gray-800 rounded-lg flex flex-col transition-all duration-300 hover:border-red-600 hover:shadow-2xl hover:shadow-red-900/40 overflow-hidden';
+                    card.innerHTML = `
+                        <div class="video-preview-container w-full aspect-video">
+                            <video class="video-preview w-full h-full object-cover" autoplay loop muted playsinline src="${group.videoSrc}"></video>
+                        </div>
+                        <div class="p-4 flex flex-col space-y-4 flex-grow">
+                            <div class="flex items-center space-x-3">
+                                <span class="heartbeat w-3 h-3 bg-red-600 rounded-full" style="animation-duration: ${Math.random() * 1 + 0.8}s;"></span>
+                                <h3 class="font-black text-lg text-white">${group.title}</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm flex-grow">${group.description}</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center justify-between text-gray-300">
+                                    <span>🔥 Watazamaji Live:</span>
+                                    <span id="counter-${group.id}" class="font-bold text-green-400">${Math.floor(Math.random() * 200) + 50}</span>
+                                </div>
+                                ${group.hasTyping ? `<div id="typing-${group.id}" class="text-yellow-400 font-bold text-xs typing-indicator" style="display: none;">Malaya anachapa</div>` : ''}
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 font-bold">UKALI WA NYEGE</span>
+                                <div class="w-full bg-gray-700 rounded-full h-1.5 mt-1">
+                                    <div id="bar-${group.id}" class="bg-gradient-to-r from-yellow-500 to-red-600 h-1.5 rounded-full" style="width: ${Math.floor(Math.random() * 60) + 40}%; transition: width 2s ease-in-out;"></div>
+                                </div>
+                            </div>
+                            <button class="open-modal-trigger w-full bg-red-600 text-white font-bold py-3 rounded-lg uppercase tracking-wider transition-transform duration-200 hover:scale-105 hover:bg-red-500 mt-auto">
+                                ${group.buttonText}
+                            </button>
+                        </div>
+                    `;
+                    groupsGrid.appendChild(card);
+                });
+
+                setInterval(() => {
+                    groupsData.forEach(group => {
+                        const counterElement = document.getElementById(`counter-${group.id}`);
+                        if (counterElement) {
+                            let currentValue = parseInt(counterElement.innerText);
+                            const change = Math.floor(Math.random() * 5) - 2;
+                            counterElement.innerText = Math.max(20, currentValue + change);
+                        }
+                        if (group.hasTyping) {
+                            const typingElement = document.getElementById(`typing-${group.id}`);
+                            if (typingElement) {
+                                typingElement.style.display = Math.random() > 0.5 ? 'block' : 'none';
+                            }
+                        }
+                        const barElement = document.getElementById(`bar-${group.id}`);
+                        if (barElement) {
+                            barElement.style.width = `${Math.floor(Math.random() * 60) + 40}%`;
+                        }
+                    });
+                }, 2500);
+            }
+            
+            // 3. Setup Video Challenge Section
+            if (challengeVideo) {
+                const challengeVideoSources = [
+                    'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452687/13452687-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452678/13452678-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/124/12444399/12444399-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/134/13452698/13452698-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/130/13060359/13060359-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12040346/12040346-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/131/13172572/13172572-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/131/13172048/13172048-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/131/13172064/13172064-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/13/133/13382197/13382197-preview.webm'
+                ];
+                let interruptionTimer;
+
+                function setChallengeVideo(src) {
+                    challengeVideo.src = src;
+                    challengeVideo.load();
+                    challengeVideo.pause();
+                    playOverlay.classList.remove('hidden');
+                    interruptionOverlay.classList.add('hidden');
+                    finalCtaButton.classList.remove('animate-pulse-red', 'bg-red-600', 'hover:bg-red-500');
+                    finalCtaButton.innerText = "SITAKI KUSHINDWA (TSH 5,000)";
+                    clearTimeout(interruptionTimer);
+                }
+
+                function playAndSetTrap() {
+                    playOverlay.classList.add('hidden');
+                    challengeVideo.play().catch(e => console.error("Play failed:", e));
+
+                    interruptionTimer = setTimeout(() => {
+                        challengeVideo.pause();
+                        interruptionOverlay.classList.remove('hidden');
+                        finalCtaButton.classList.add('animate-pulse-red', 'bg-red-600', 'hover:bg-red-500');
+                        finalCtaButton.innerText = "NAKUBALI DAU (LIPA 5,000)";
+                    }, 10000); // Sekunde 10
+                }
+
+                challengeVideoSources.slice(0, 5).forEach((src, index) => {
+                    const thumbWrapper = document.createElement('div');
+                    thumbWrapper.className = 'relative w-24 h-16 sm:w-32 sm:h-20 border-2 border-gray-700 rounded cursor-pointer overflow-hidden hover:border-yellow-400 transition-all';
+                    thumbWrapper.innerHTML = `
+                        <video class="w-full h-full object-cover" muted loop playsinline src="${src}"></video>
+                        <div class="absolute top-1 left-1 flex items-center space-x-1">
+                            <span class="w-2 h-2 bg-red-500 rounded-full rec-blink"></span>
+                            <span class="font-cctv text-xs text-white drop-shadow-lg">LIVE</span>
+                        </div>
+                        <div class="absolute bottom-0 right-1 font-cctv text-xs text-white drop-shadow-lg">DAU #${index + 1}</div>
+                    `;
+                    thumbWrapper.addEventListener('click', () => setChallengeVideo(src));
+                    cctvThumbnails.appendChild(thumbWrapper);
+                });
+                
+                if (challengeVideoSources.length > 0) {
+                    setChallengeVideo(challengeVideoSources[0]);
+                }
+                playOverlay.addEventListener('click', playAndSetTrap);
+            }
+
+            // 4. Setup Engonga Vault
+            if (vaultContainer) {
+                const vaultVideos = [
+                    'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/124/12463982/12463982-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12097517/12097517-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/121/12165824/12165824-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/123/12379453/12379453-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12097526/12097526-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/120/12097349/12097349-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/122/12271419/12271419-preview.webm', 'https://static-eu-cdn.eporner.com/thumbs/static4/1/12/121/12116404/12116404-preview.webm', 'https://placehold.co/100x100/ff0000/000000?text=XXX', 'https://placehold.co/100x100/ff0000/000000?text=XXX', 'https://placehold.co/100x100/ff0000/000000?text=XXX', 'https://placehold.co/100x100/ff0000/000000?text=XXX',
+                ];
+                
+                vaultVideos.forEach(src => {
+                    const videoWrapper = document.createElement('div');
+                    videoWrapper.className = 'glitch-img w-full h-full';
+                    videoWrapper.style.animationDelay = `${Math.random() * 0.5}s`;
+                    
+                    if(src.includes('webm')){
+                        videoWrapper.innerHTML = `<video class="w-full h-full object-cover" autoplay loop muted playsinline src="${src}"></video>`;
+                    } else {
+                        videoWrapper.innerHTML = `<img class="w-full h-full object-cover" src="${src}" alt="Engonga Thumbnail">`;
+                    }
+                    insideVaultGrid.appendChild(videoWrapper);
+                });
+
+                let isOpening = false;
+                vaultButton.addEventListener('click', () => {
+                    if (isOpening) return;
+                    isOpening = true;
+                    vaultContainer.classList.add('is-opening');
+                    buttonContainer.style.opacity = '0';
+                    vaultHeader.style.opacity = '0';
+                    setTimeout(() => {
+                        buttonContainer.classList.add('hidden');
+                        vaultHeader.classList.add('hidden');
+                    }, 500);
+                    setTimeout(() => {
+                        openedText.classList.remove('hidden');
+                        setTimeout(() => {
+                            openedText.style.opacity = '1';
+                        }, 50);
+                    }, 1500);
+                });
+            }
+
+            // 5. Setup Live Feed Section
+            if (scroller) {
+                const fakeUsernames = [
+                    '@Mrembo_wa_Sinza', '@Baba_Mwenye_Nyumba', '@Toto_la_UDSM', '@Fundi_Mitambo', '@Kigoli_Chuo', '@Mzee_wa_Gesti', '@Shemela_Official', '@Danga_la_Kariakoo'
+                ];
+                const allVideos = [...reelVideoSources, ...reelVideoSources];
+
+                allVideos.forEach(src => {
+                    const card = document.createElement('div');
+                    card.className = 'flex-shrink-0 mx-2 w-40 h-64 sm:w-48 sm:h-72 rounded-lg overflow-hidden relative border-2 border-gray-700 hover:border-red-500 transition-all duration-300 cursor-pointer';
+                    
+                    const randomUser = fakeUsernames[Math.floor(Math.random() * fakeUsernames.length)];
+                    let viewerCount = Math.floor(Math.random() * 1500) + 200;
+                    const uniqueId = src.slice(-10).replace('.', '');
+
+                    card.innerHTML = `
+                        <video class="w-full h-full object-cover" autoplay loop muted playsinline src="${src}"></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-2 left-2">
+                            <span class="live-badge bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">LIVE</span>
+                        </div>
+                        <div class="absolute bottom-2 left-2 text-white">
+                            <p class="text-xs font-bold drop-shadow-lg">${randomUser}</p>
+                            <p class="text-xs text-gray-300 drop-shadow-lg flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C3.732 4.943 9.522 3 10 3s6.268 1.943 9.542 7c-3.274 5.057-9.062 7-9.542 7S3.732 15.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+                                <span id="views-${uniqueId}">${viewerCount}</span>
+                            </p>
+                        </div>
+                    `;
+                    scroller.appendChild(card);
+                    
+                    setInterval(() => {
+                        const viewerElement = document.getElementById(`views-${uniqueId}`);
+                        if(viewerElement){
+                            let currentViews = parseInt(viewerElement.innerText);
+                            const change = Math.floor(Math.random() * 5) - 2;
+                            viewerElement.innerText = Math.max(50, currentViews + change);
+                        }
+                    }, 3000);
+                });
+            }
+
+            // 6. Setup Testimonials
+            if (testimonialSlider) {
+                testimonialSlider.innerHTML = '';
+                testimonials.forEach(item => {
+                    const slide = document.createElement('div');
+                    slide.className = 'testimonial-slide flex-shrink-0 w-full p-2 snap-center';
+                    slide.innerHTML = `
+                        <div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+                            <div>
+                                <p class="text-5xl text-[var(--brand-gold)]">“</p>
+                                <p class="text-lg md:text-xl mt-2 italic"> ${item.quote}</p>
+                            </div>
+                            <p class="text-right mt-4 font-bold text-[var(--brand-red)]">- ${item.author}</p>
+                        </div>
+                    `;
+                    testimonialSlider.appendChild(slide);
+                });
+            }
+
+            // --- Event Listeners ---
+
+            // Modal Triggers
+            const openModal = () => paymentModal.classList.remove('hidden');
+            const closeModal = () => {
+                paymentModal.classList.add('hidden');
+                // Reset modal state
+                if(proceedButton) {
+                    payButtonText.classList.remove('hidden');
+                    payButtonSpinner.classList.add('hidden');
+                    proceedButton.disabled = false;
+                }
+            };
+            
+            document.querySelectorAll('.open-modal-trigger').forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+
+            closeModalButton.addEventListener('click', closeModal);
+            paymentModal.addEventListener('click', (event) => {
+                if (event.target === paymentModal) closeModal();
+            });
+
+            // Testimonial Slider Logic
+            const testimonialSliderEl = document.getElementById('testimonial-slider');
+            const prevBtn = document.getElementById('prev-testimonial');
+            const nextBtn = document.getElementById('next-testimonial');
+            
+            const slideNext = () => {
+                if(!testimonialSliderEl) return;
+                const slideWidth = testimonialSliderEl.querySelector('.testimonial-slide').clientWidth;
+                const newScrollLeft = testimonialSliderEl.scrollLeft + slideWidth;
+                testimonialSliderEl.scrollTo({ 
+                    left: newScrollLeft >= testimonialSliderEl.scrollWidth ? 0 : newScrollLeft, 
+                    behavior: 'smooth' 
+                });
+            };
+            const slidePrev = () => {
+                if(!testimonialSliderEl) return;
+                const slideWidth = testimonialSliderEl.querySelector('.testimonial-slide').clientWidth;
+                testimonialSliderEl.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+            };
+
+            let testimonialInterval = setInterval(slideNext, 5000);
+            
+            if (nextBtn && prevBtn) {
+                nextBtn.addEventListener('click', () => { clearInterval(testimonialInterval); slideNext(); });
+                prevBtn.addEventListener('click', () => { clearInterval(testimonialInterval); slidePrev(); });
+            }
+
+            // Final Gate Logic
+            if (pressureBar && headcount) {
+                let currentPressure = 85;
+                let currentHeadcount = 469;
+
+                setInterval(() => {
+                    currentPressure += Math.random() * 0.5;
+                    if (currentPressure > 98) {
+                        currentPressure = 98;
+                    }
+                    pressureBar.style.width = `${currentPressure}%`;
+                }, 1000);
+
+                setInterval(() => {
+                    if (currentHeadcount < 498) {
+                        currentHeadcount += 1;
+                        headcount.innerText = `${currentHeadcount} / 500`;
+                    }
+                }, Math.random() * 5000 + 3000);
+            }
+
+            // Live Chat Logic
+            if (chatFeed) {
+                const fakeMessages = [
+                    { user: 'Admin_Moto 🔥', msg: 'Nimetuma video mpya ya housegirl, chekini.' },
+                    { user: 'Juma_la_Moto', msg: 'Kumamake hii video ni balaa! 💦' },
+                    { user: 'Toto_la_UDSM', msg: 'Nani ana namba ya yule demu wa Masaki?' },
+                    { user: 'Baba_Mwenye_Nyumba', msg: 'Nimetoka kumaliza mmoja, nani mwingine yuko online?' },
+                    { user: 'Shemela_Official', msg: 'Hii group ndo habari ya mjini. Buku 5 ndogo sana.' },
+                    { user: 'Fundi_Mitambo', msg: 'Hiyo link ya Engonga bado ipo?' },
+                    { user: 'Admin_Moto 🔥', msg: 'Ipo, nimeshai-pin juu.' },
+                    { user: 'Kojo_Master', msg: 'Hii video ya sasa hivi imenikojolesha fasta... asante admin' }
+                ];
+                
+                const userColors = {
+                    'Admin_Moto 🔥': 'text-red-400', 'Juma_la_Moto': 'text-yellow-400', 'Toto_la_UDSM': 'text-pink-400', 'Baba_Mwenye_Nyumba': 'text-blue-400', 'Shemela_Official': 'text-green-400', 'Fundi_Mitambo': 'text-purple-400', 'Kojo_Master': 'text-orange-400'
+                };
+
+                let chatMessageIndex = 0;
+
+                function addChatMessage() {
+                    if (chatFeed.children.length > 10) {
+                        chatFeed.removeChild(chatFeed.lastChild);
+                    }
+                    const messageData = fakeMessages[chatMessageIndex];
+                    const userColor = userColors[messageData.user] || 'text-white';
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'new-chat-message p-1.5 text-sm';
+                    messageElement.innerHTML = `<p><span class="font-bold ${userColor}">${messageData.user}:</span> <span class="text-gray-200">${messageData.msg}</span></p>`;
+                    chatFeed.insertBefore(messageElement, chatFeed.firstChild);
+                    chatMessageIndex = (chatMessageIndex + 1) % fakeMessages.length;
+                }
+                for(let i=0; i<5; i++){ addChatMessage(); }
+                setInterval(addChatMessage, 2500);
+            }
+
+            // Ramani ya Malaya Logic
+            if (hookerCount) {
+                let currentCount = 127;
+                setInterval(() => {
+                    const change = Math.floor(Math.random() * 5) - 2;
+                    currentCount = Math.max(100, currentCount + change);
+                    hookerCount.innerText = currentCount;
+                }, 2000);
+            }
+
+            // --- *** PAYMENT LOGIC (UNCHANGED CORE FUNCTIONALITY) *** ---
             if (proceedButton) {
                 proceedButton.addEventListener('click', async () => {
                     // Show loading state
@@ -616,7 +1285,7 @@
                         const response = await fetch(window.location.origin + '/pay', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            // No body is needed anymore
+                            // No body is needed as per the existing backend logic
                         });
 
                         const result = await response.json();
@@ -643,86 +1312,6 @@
                     }
                 });
             }
-            
-            // --- UPDATED resetForm function ---
-            const resetModalState = () => {
-                if(proceedButton) {
-                    payButtonText.classList.remove('hidden');
-                    payButtonSpinner.classList.add('hidden');
-                    proceedButton.disabled = false;
-                }
-            };
-
-            if (closeModalButton) {
-                closeModalButton.addEventListener('click', resetModalState);
-            }
-
-
-            // --- Testimonial Slider Logic ---
-            const slider = document.getElementById('testimonial-slider');
-            const prevBtn = document.getElementById('prev-testimonial');
-            const nextBtn = document.getElementById('next-testimonial');
-            let testimonialInterval;
-
-            const slideNext = () => {
-                if(!slider) return;
-                const slideWidth = slider.querySelector('.testimonial-slide').clientWidth;
-                if (slider.scrollLeft + slideWidth >= slider.scrollWidth) {
-                    slider.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
-                }
-            };
-            
-            const startTestimonialAutoplay = () => {
-                testimonialInterval = setInterval(slideNext, 5000); 
-            };
-
-            const stopTestimonialAutoplay = () => {
-                clearInterval(testimonialInterval);
-            };
-
-            if (nextBtn && prevBtn && slider) {
-                nextBtn.addEventListener('click', () => {
-                    slideNext();
-                    stopTestimonialAutoplay(); 
-                });
-
-                prevBtn.addEventListener('click', () => {
-                    const slideWidth = slider.querySelector('.testimonial-slide').clientWidth;
-                    slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-                    stopTestimonialAutoplay();
-                });
-
-                startTestimonialAutoplay();
-            }
-
-
-            // --- Countdown Timer Logic ---
-            const minutesEl = document.getElementById('minutes');
-            const secondsEl = document.getElementById('seconds');
-            let time = 15 * 60; 
-
-            const updateCountdown = () => {
-                if (!minutesEl || !secondsEl) return;
-                let minutes = Math.floor(time / 60);
-                let seconds = time % 60;
-
-                minutes = minutes < 10 ? '0' + minutes : minutes;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
-
-                minutesEl.innerHTML = minutes;
-                secondsEl.innerHTML = seconds;
-
-                if (time > 0) {
-                    time--;
-                } else {
-                    minutesEl.innerHTML = '00';
-                    secondsEl.innerHTML = '00';
-                }
-            };
-
-            setInterval(updateCountdown, 1000);
 
         });
     </script>
