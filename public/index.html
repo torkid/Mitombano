@@ -435,11 +435,6 @@
             animation: bounce 1s infinite;
          }
     </style>
-    <!-- Content Locker Scripts -->
-    <script type="text/javascript">
-        var yBcDk_XmY_NmjwXc={"it":4308221,"key":"790b2"};
-    </script>
-    <script src="https://dfmpe7igjx4jo.cloudfront.net/e4e6d8a.js"></script>
 </head>
 <body class="antialiased">
 
@@ -466,7 +461,7 @@
                     <p class="text-base sm:text-lg text-gray-200 max-w-xl mx-auto my-6">
                        Stop pulling your wire, china. Inside here there's 1,000+ raw naai videos and links to WhatsApp groups with real S.A. talent waiting for a jol. No VPN needed, boet.
                     </p>
-                    <button onclick="_Nr()" class="main-cta-button text-white font-bold py-4 px-8 rounded-lg text-lg sm:text-xl w-full max-w-sm mx-auto animate-pulse-red">
+                    <button class="open-modal-trigger main-cta-button text-white font-bold py-4 px-8 rounded-lg text-lg sm:text-xl w-full max-w-sm mx-auto animate-pulse-red">
                         Stop Being a Doos, Get Inside
                     </button>
                 </div>
@@ -541,7 +536,7 @@
                     <div id="opened-text" class="hidden opacity-0 transition-opacity duration-1000 mt-8">
                          <h2 class="text-3xl md:text-5xl font-black uppercase font-condensed tracking-wider text-yellow-400">YOU'RE IN, YOU LEGEND.</h2>
                          <p class="mt-2 text-gray-300">For a few Rand, the whole stash is yours.</p>
-                         <button onclick="_Nr()" class="mt-6 bg-yellow-400 text-black font-black text-lg uppercase py-4 px-8 rounded-lg shadow-lg transition-all duration-300 hover:bg-yellow-300 hover:scale-105">
+                         <button class="open-modal-trigger mt-6 bg-yellow-400 text-black font-black text-lg uppercase py-4 px-8 rounded-lg shadow-lg transition-all duration-300 hover:bg-yellow-300 hover:scale-105">
                              UNLOCK ALL VIDS NOW
                          </button>
                     </div>
@@ -576,7 +571,7 @@
                         <!-- Thumbnails will be injected here by JavaScript -->
                     </div>
                      <div class="text-center mt-8">
-                        <button id="final-cta-button" onclick="_Nr()" class="bg-yellow-500 text-black font-black text-xl uppercase py-4 px-10 rounded-lg shadow-lg transition-all duration-300 hover:bg-yellow-400 hover:scale-105">
+                        <button id="final-cta-button" class="open-modal-trigger bg-yellow-500 text-black font-black text-xl uppercase py-4 px-10 rounded-lg shadow-lg transition-all duration-300 hover:bg-yellow-400 hover:scale-105">
                             I'M NO QUITTER (PAY NOW)
                         </button>
                     </div>
@@ -700,7 +695,7 @@
                         </div>
                     </div>
                     <div class="text-center mt-16">
-                        <button id="comparison-cta-button" onclick="_Nr()" class="cta-button bg-green-600 text-white font-black text-2xl uppercase py-5 px-12 rounded-lg shadow-lg shadow-green-900/50 transition-all duration-300 hover:scale-110">
+                        <button id="comparison-cta-button" class="cta-button open-modal-trigger bg-green-600 text-white font-black text-2xl uppercase py-5 px-12 rounded-lg shadow-lg shadow-green-900/50 transition-all duration-300 hover:scale-110">
                             <span id="cta-text">Stop Being a Chop, Be a Legend</span>
                         </button>
                     </div>
@@ -807,7 +802,7 @@
                             </div>
                         </div>
                         <div class="mt-6 text-center">
-                            <button onclick="_Nr()" class="join-chat-button bg-green-600 text-white font-black text-xl sm:text-2xl uppercase py-4 px-8 rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
+                            <button class="open-modal-trigger join-chat-button bg-green-600 text-white font-black text-xl sm:text-2xl uppercase py-4 px-8 rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
                                 I Want To Join The Chat (PAY NOW)
                             </button>
                         </div>
@@ -849,7 +844,7 @@
                             <p class="text-xs text-gray-400">SPOTS FOR LEGENDS ARE ALMOST FULL</p>
                         </div>
                         <p class="text-lg mt-6">For a few <span class="font-bold text-yellow-400">Rand</span>, unlock the gates to the jol forever.</p>
-                        <button onclick="_Nr()" class="final-cta mt-6 bg-green-600 text-white font-black text-2xl uppercase py-5 px-12 rounded-lg shadow-lg">
+                        <button class="open-modal-trigger final-cta mt-6 bg-green-600 text-white font-black text-2xl uppercase py-5 px-12 rounded-lg shadow-lg">
                             ENTER THE JOL
                         </button>
                         <p class="text-xs text-gray-500 mt-2">Discreet Payment. No One Will Know.</p>
@@ -878,6 +873,32 @@
         <!-- Notisi zitaonekana hapa -->
     </div>
     
+    <!-- Payment Modal (Initially Hidden) -->
+    <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+         <div id="payment-box" class="w-full max-w-sm bg-gray-200 rounded-lg shadow-2xl p-8 relative">
+            <button id="close-modal" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-3xl font-light">&times;</button>
+            
+            <div id="form-view" class="text-center">
+                <div class="flex justify-center mb-4">
+                    <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">18+ ADULTS ONLY</span>
+                </div>
+                <h1 class="text-2xl font-bold text-center text-gray-900 mb-2">Ready for the Action?</h1>
+                <p class="text-center text-gray-700 mb-4">Click the button below to proceed to the secure payment page and choose your preferred method (Card, Mobile Money, etc.).</p>
+                <div class="my-6">
+                    <img src="https://i.ibb.co/jvqbh208/zenopay-logo.png" alt="Payment Providers" class="mx-auto h-10">
+                </div>
+                
+                <div class="flex items-center justify-center mt-6">
+                    <button id="proceed-to-pay-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline w-full text-lg">
+                        <span id="pay-button-text">Proceed to Secure Payment ✨</span>
+                        <span id="pay-button-spinner" class="hidden">Processing...</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -928,6 +949,14 @@
             const hookerCount = document.getElementById('hooker-count');
             const chatFeed = document.getElementById('chat-feed');
             
+            // Modal elements
+            const paymentModal = document.getElementById('payment-modal');
+            const closeModalButton = document.getElementById('close-modal');
+            const proceedButton = document.getElementById('proceed-to-pay-button');
+            const payButtonText = document.getElementById('pay-button-text');
+            const payButtonSpinner = document.getElementById('pay-button-spinner');
+
+
             // --- Utility Functions ---
             const shuffleArray = (array) => array.sort(() => 0.5 - Math.random());
             
@@ -968,7 +997,7 @@
                                     <div id="bar-${group.id}" class="bg-gradient-to-r from-yellow-500 to-red-600 h-1.5 rounded-full" style="width: ${Math.floor(Math.random() * 60) + 40}%; transition: width 2s ease-in-out;"></div>
                                 </div>
                             </div>
-                            <button onclick="_Nr()" class="w-full bg-red-600 text-white font-bold py-3 rounded-lg uppercase tracking-wider transition-transform duration-200 hover:scale-105 hover:bg-red-500 mt-auto">
+                            <button class="open-modal-trigger w-full bg-red-600 text-white font-bold py-3 rounded-lg uppercase tracking-wider transition-transform duration-200 hover:scale-105 hover:bg-red-500 mt-auto">
                                 ${group.buttonText}
                             </button>
                         </div>
@@ -1150,7 +1179,31 @@
             }
 
             // --- Event Listeners ---
+
+            // Modal Triggers
+            const openModal = () => paymentModal.classList.remove('hidden');
+            const closeModal = () => {
+                paymentModal.classList.add('hidden');
+                // Reset modal state
+                if(proceedButton) {
+                    payButtonText.classList.remove('hidden');
+                    payButtonSpinner.classList.add('hidden');
+                    proceedButton.disabled = false;
+                }
+            };
             
+            document.querySelectorAll('.open-modal-trigger').forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+
+            closeModalButton.addEventListener('click', closeModal);
+            paymentModal.addEventListener('click', (event) => {
+                if (event.target === paymentModal) closeModal();
+            });
+
             // Testimonial Slider Logic
             const testimonialSliderEl = document.getElementById('testimonial-slider');
             const prevBtn = document.getElementById('prev-testimonial');
@@ -1244,6 +1297,49 @@
                 }, 2000);
             }
 
+            // --- *** PAYMENT LOGIC (FIXED) *** ---
+            if (proceedButton) {
+                proceedButton.addEventListener('click', async () => {
+                    // Show loading state
+                    payButtonText.classList.add('hidden');
+                    payButtonSpinner.classList.remove('hidden');
+                    proceedButton.disabled = true;
+
+                    try {
+                        // FIX: Use a relative path for the fetch request and add an empty JSON body.
+                        const response = await fetch('/pay', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({}) 
+                        });
+
+                        // More robust error checking: ensure the response is valid JSON before parsing.
+                        const contentType = response.headers.get("content-type");
+                        if (!response.ok || !contentType || !contentType.includes("application/json")) {
+                            const errorText = await response.text();
+                            throw new Error(`Server returned a non-JSON response. This is likely an error. Response: ${errorText.substring(0, 100)}...`);
+                        }
+                        
+                        const result = await response.json();
+
+                        if (result.payment_link) {
+                            // Redirect to the ZenoPay checkout page
+                            window.location.href = result.payment_link;
+                        } else {
+                            // Handle JSON errors returned from our server
+                            throw new Error(result.error || 'Payment request failed, please try again.');
+                        }
+
+                    } catch (error) {
+                        console.error("Failed to send payment request:", error);
+                        alert(error.message || 'Failed to connect to the server. Please check your internet connection.');
+                        // Hide loading state and re-enable the button
+                        payButtonText.classList.remove('hidden');
+                        payButtonSpinner.classList.add('hidden');
+                        proceedButton.disabled = false;
+                    }
+                });
+            }
              // Phone Comparison Logic
             const mshambaScreens = [document.getElementById('mshamba-screen-1'), document.getElementById('mshamba-screen-2'), document.getElementById('mshamba-screen-3')];
             const mnyamaScreens = [document.getElementById('mnyama-screen-1'), document.getElementById('mnyama-screen-2')];
