@@ -16,6 +16,10 @@
       "dest": "index.js"
     },
     {
+      "src": "/check-status",
+      "dest": "index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "public/$1"
     }

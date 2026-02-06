@@ -1,122 +1,145 @@
 // index.js
 // Import necessary libraries
 const express = require('express');
-const axios = require('axios'); // Used to communicate with APIs
+const axios = require('axios'); // Used to communicate with ZenoPay API
 const path = require('path');
 
 // --- Configuration ---
 const app = express();
-const port = process.env.PORT || 3000;
-const ZENO_API_KEY = process.env.ZENOPAY_API_KEY;
-const EXCHANGE_RATE_API_KEY = process.env.EXCHANGE_RATE_API_KEY; // API Key for currency conversion
-const ZENO_API_URL = "https://zenoapi.com/api/payments/checkout/";
+const port = process.env.PORT || 3000; // Vercel will set the port automatically
+const API_KEY = "sv5YWe1oG-UtuxHtlTaC5ilIai9CWQufO3uwtoZtqpwwmZUWncric2JICY9diemFiue1XRNaiPnDgQtjxTqEFg";
 
-// Define a base price in USD. This will be converted to the local currency.
-const BASE_PRICE_USD = 2.50; 
+// BEI IMEBADILISHWA KUWA 1000 KULINGANA NA PAGE MPYA
+const GROUP_PRICE = 1000; // The price for your WhatsApp group in TZS
+const API_URL = "https://zenoapi.com/api/payments/mobile_money_tanzania";
 
 // --- Middleware ---
+// This allows our server to understand JSON and form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Serve static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// --- HTML Template ---
+// We'll serve a static HTML file for the frontend
+const paymentPagePath = path.join(__dirname, 'public', 'index.html');
+
 // --- Web Routes ---
+
+// Route to serve the main payment page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(paymentPagePath);
 });
 
 // Route to handle the payment submission
-// NOTE: This route no longer requires a phone number from the body
 app.post('/pay', async (req, res) => {
-    // Get the user's country code from Vercel's request headers. Default to 'KE' (Kenya) if not found.
-    const countryCode = req.headers['x-vercel-ip-country'] || 'KE';
+    const { phone } = req.body;
 
-    let currency = 'USD';
-    let finalAmount = BASE_PRICE_USD;
-
-    // A map to determine the local currency for specific countries
-    const countryCurrencyMap = {
-        'TZ': 'TZS',
-        'KE': 'KES',
-        'UG': 'UGX',
-        'NG': 'NGN',
-        'ZA': 'ZAR',
-        'RW': 'RWF', // Rwanda
-        'GH': 'GHS', // Ghana
-    };
-
-    if (countryCurrencyMap[countryCode]) {
-        currency = countryCurrencyMap[countryCode];
-        
-        // Only perform conversion if an API key is provided
-        if (EXCHANGE_RATE_API_KEY) {
-            try {
-                // Fetch the latest conversion rate from USD to the local currency
-                const exchangeApiUrl = `https://v6.exchangerate-api.com/v6/${EXCHANGE_RATE_API_KEY}/pair/USD/${currency}`;
-                const rateResponse = await axios.get(exchangeApiUrl);
-                const conversionRate = rateResponse.data.conversion_rate;
-
-                if (!conversionRate) {
-                    throw new Error(`Could not get conversion rate for ${currency}`);
-                }
-                
-                // Calculate the price in the local currency
-                let convertedAmount = BASE_PRICE_USD * conversionRate;
-
-                // Round up the amount to a more sensible number for local currencies
-                // Example: 6123.45 TZS becomes 6200 TZS
-                if (['TZS', 'KES', 'UGX', 'RWF'].includes(currency)) {
-                    finalAmount = Math.ceil(convertedAmount / 100) * 100;
-                } else {
-                    finalAmount = Math.ceil(convertedAmount);
-                }
-
-            } catch (apiError) {
-                console.error("Currency conversion API error:", apiError.message);
-                // If conversion fails for any reason, we fall back to the default USD price.
-                currency = 'USD';
-                finalAmount = BASE_PRICE_USD;
-            }
-        }
+    // Basic validation for the phone number
+    if (!phone || !(phone.startsWith('07') || phone.startsWith('06')) || phone.length !== 10) {
+        return res.status(400).json({
+            message_title: "Namba si sahihi",
+            message_body: "Tafadhali rudi mwanzo uweke namba sahihi ya simu, mfano: 07xxxxxxxx.",
+            status: "Error",
+            reference: "N/A"
+        });
     }
 
-    const REDIRECT_URL = `${req.protocol}://${req.get('host')}/uthibitisho.html`;
+    const transaction_reference = `WPGRP-${Date.now()}`;
 
-    // Payload for the ZenoPay Multi-Currency Checkout API
-    // We now use generic customer details
+    // Payload for the ZenoPay API
     const payload = {
-        "amount": finalAmount,
-        "currency": currency,
-        "buyer_name": "Valued Customer",
-        "buyer_email": `customer-${Date.now()}@zenopay.com`, // Unique email for tracking
-        "buyer_phone": "N/A",
-        "redirect_url": REDIRECT_URL
+        "order_id": transaction_reference,
+        "buyer_name": "Mteja Wa Penzi",
+        "buyer_email": "malipo@penzishata.com",
+        "buyer_phone": phone,
+        "amount": GROUP_PRICE
     };
 
+    // Headers for authentication
     const headers = {
         "Content-Type": "application/json",
-        "x-api-key": ZENO_API_KEY
+        "x-api-key": API_KEY
     };
 
     try {
-        const response = await axios.post(ZENO_API_URL, payload, { headers });
+        // Send the request to ZenoPay
+        const response = await axios.post(API_URL, payload, { headers });
+
         console.log("ZenoPay API Response:", response.data);
-        if (response.data && response.data.payment_link) {
+
+        // Check the response from ZenoPay
+        if (response.data && response.data.status === 'success') {
             res.json({
-                payment_link: response.data.payment_link
+                message_title: "Angalia Simu Yako!",
+                message_body: "Tumekutumia ombi la malipo. Tafadhali weka namba yako ya siri kuthibitisha.",
+                status: "Inasubiri uthibitisho",
+                reference: transaction_reference
             });
         } else {
             res.status(400).json({
-                error: "Ombi la Malipo Halikufanikiwa. Hatukuweza kupata linki ya malipo."
+                message_title: "Ombi la Malipo Halikufanikiwa",
+                message_body: response.data.message || "Hatukuweza kutuma ombi la malipo.",
+                status: "Imeshindwa",
+                reference: transaction_reference
             });
         }
     } catch (error) {
-        const errorMsg = error.response ? error.response.data : error.message;
-        console.error("An error occurred with ZenoPay:", errorMsg);
+        console.error("An error occurred:", error.response ? error.response.data : error.message);
         res.status(500).json({
-            error: "Samahani, kumetokea tatizo la kimfumo. Tafadhali jaribu tena baadae."
+            message_title: "Hitilafu ya Mfumo",
+            message_body: "Samahani, kumetokea tatizo la kimfumo. Tafadhali jaribu tena baadae.",
+            status: "Error",
+            reference: transaction_reference
         });
     }
 });
 
-// Export the app for Vercel
-module.exports = app;
+// Route to check transaction status
+app.get('/check-status', async (req, res) => {
+    const { order_id } = req.query;
+
+    if (!order_id) {
+        return res.status(400).json({ status: 'ERROR', message: 'Order ID is required' });
+    }
+
+    const statusUrl = `https://zenoapi.com/api/payments/order-status?order_id=${order_id}`;
+
+    // Headers for authentication
+    const headers = {
+        "Content-Type": "application/json",
+        "x-api-key": API_KEY
+    };
+
+    try {
+        const response = await axios.get(statusUrl, { headers });
+        console.log("ZenoPay Status Response:", JSON.stringify(response.data));
+
+        // Parse the response to find the status
+        // Structure based on user request: data[0].payment_status
+        let status = 'PENDING';
+
+        if (response.data && response.data.data && response.data.data.length > 0) {
+            const paymentStatus = response.data.data[0].payment_status;
+            if (paymentStatus === 'COMPLETED') {
+                status = 'COMPLETED';
+            } else if (paymentStatus === 'FAILED') {
+                status = 'FAILED';
+            }
+        }
+
+        res.json({ status });
+
+    } catch (error) {
+        console.error("Error checking status:", error.response ? error.response.data : error.message);
+        // Don't fail the polling on network error, just return pending or error so client keeps trying or handles it
+        res.json({ status: 'PENDING' });
+    }
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
+
+
